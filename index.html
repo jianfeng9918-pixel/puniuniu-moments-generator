@@ -589,7 +589,7 @@
       <header class="hero">
         <div class="eyebrow">
           <span>朴牛牛黑牛烤肉 · 门店员工版</span>
-          <span class="version">v2.1</span>
+          <span class="version">v2.2</span>
         </div>
         <h1>朋友圈生成器</h1>
         <p>少选几项，生成一条像店里人自己发的短文案。复制按钮放大了，生成后直接发朋友圈。</p>
@@ -787,7 +787,7 @@
             closers: ["能用的福利我们会当面帮你看。", "具体以当天门店和平台为准。", "先收藏，来之前问一句就行。"],
           },
           realScene: {
-            openers: ["今天不写广告，就发点真实现场", "店里今天状态不错，顺手记录一下", "朋友圈还是发真实一点，大家看着放心"],
+            openers: ["今天不写广告，就发点门店现场", "店里烤盘热起来了，顺手记录一下", "朋友圈发当天实拍，大家看着更放心"],
             closers: ["照片尽量发实拍，更有感觉。", "想吃就来，不用想太复杂。", "真实到店、真实烤肉，才有烟火气。"],
           },
         },
@@ -864,7 +864,7 @@
               "新口味不用一次点太多，先试试更合适。",
             ],
             confident: [
-              "新品今天状态不错，适合想换口味的朋友。",
+              "新品今天适合尝鲜，想换口味的朋友可以试一份。",
               "新菜上桌挺好拍，味道也适合先尝鲜。",
             ],
             image: ["新品单品近景", "新品和经典款同桌对比", "店员推荐新品"],
@@ -1079,7 +1079,7 @@
               benefit: [
                 "今天有现场、有肉香，也有能问的活动，来之前可以先看一眼。",
                 "想吃得实在一点，到店问当天口径，我们会帮你看。",
-                "这条就当提醒：店里今天状态不错，想吃肉可以来。",
+                "这条就当提醒：今天想吃肉，可以来吃顿热的。",
               ],
             },
           },
@@ -1151,7 +1151,7 @@
             "雪花上脑烤到七八分熟，咬下去是嫩的。",
             "牡蛎肉这个部位很多人没试过，来了可以点一份。",
             "果木炭烤出来有淡淡木香，闻着就有食欲。",
-            "有助烤的时候，不用一直自己盯着烤盘。",
+            "需要助烤可以直接跟店员说，吃起来会更省心。",
           ],
           crowd: [
             "几个朋友好久没聚了，约顿烤肉吧。",
@@ -1218,7 +1218,7 @@
             label: "助烤服务",
             lines: [
               "第一次来不用担心烤不好，到店可以问问助烤。",
-              "你负责聊天吃肉，我们帮你盯着火候会更省心。",
+              "店员帮忙看火候，聚餐聊天也不耽误吃肉。",
               "不会烤也没关系，坐下来，剩下的交给店员帮你看。",
             ],
             staff: [
@@ -1263,8 +1263,8 @@
           trust: {
             daily: [
               "今天店里就是正常忙，烤盘一热起来就有烟火气。",
-              "真实现场不用写太满，拍到肉和人就够了。",
-              "店里人忙起来的时候，反而更像真实朋友圈。",
+              "当天实拍不用复杂，拍到肉和人就够了。",
+              "店里烤盘一热起来，烟火气就有了。",
             ],
             service: [
               "不太会烤也不用紧张，店员会按现场情况帮你看火候。",
@@ -1274,7 +1274,7 @@
             feedback: [
               "刚才有桌客人说今天这顿吃得挺舒服，听着就很开心。",
               "有客人吃完说下次还带朋友来，这种反馈挺实在。",
-              "今天有桌客人加了肉，说明这口确实对味。",
+              "今天有桌客人加了肉，听着就挺实在。",
             ],
             oldReturn: [
               "老朋友回来问权益，我们会按当天门店口径说明白。",
@@ -1284,7 +1284,7 @@
           },
           action: [
             "想吃的话，到店问我们就行。",
-            "路过万博附近，可以进来看看今天状态。",
+            "路过万博可以顺路来吃顿热的。",
             "不会点也没关系，我们按人数帮你搭。",
             "先留着，今天想吃肉的时候再翻出来。",
             "具体活动和权益，以当天门店口径为准。",
@@ -1318,7 +1318,7 @@
         },
         qualityTips: [
           "检查：像朋友发的、只说一件事、发前核对当天口径。",
-          "发前看一眼：别像广告，别写太满，活动按当天门店口径。",
+          "发前看一眼：别像广告，活动按当天门店口径。",
           "小检查：顾客看完知道今天可以来，文案里没有夸张承诺。",
           "发布前确认：图片用实拍，福利和营业时间按当天口径删改。",
         ],
@@ -1367,6 +1367,304 @@
 
       let currentMomentText = "";
       let lastSignature = "";
+      let lastTemplateKey = "";
+
+      const contentV22 = {
+        badPhrases: [
+          "今天状态",
+          "真实朋友圈",
+          "不写太满",
+          "真实比精修",
+          "可以进来看看今天状态",
+          "你负责聊天吃肉",
+          "不用一直自己盯着烤盘",
+          "说明这口确实对味",
+          "反而更像",
+          "保定第一",
+          "全城最火",
+          "必吃天花板",
+          "赶紧来",
+          "快来抢",
+          "限时",
+          "23点前都能来",
+          "全天都有",
+          "发朋友圈可以",
+          "文案简单",
+          "文案",
+          "今天适合发",
+          "发现场图",
+          "发门店日常",
+          "拍一张",
+          "拍三张",
+          "拍近景",
+          "发一张",
+          "照片会",
+          "先发一条",
+          "发出去",
+          "配图：",
+        ],
+        extraReplacements: [
+          ["状态不错", "看着不错"],
+          ["今天状态", "今天安排"],
+          ["真实朋友圈", "门店日常"],
+          ["不写太满", "简单说"],
+          ["真实比精修", "当天实拍更合适"],
+          ["牛肉状态", "牛肉看着"],
+          ["店里状态", "店里安排"],
+          ["状态", "安排"],
+        ],
+        products: {
+          honeyBeef: {
+            name: "蜜汁牛肉",
+            note: "微甜口，烤起来香，适合先尝一份",
+            image: "蜜汁牛肉近景或烤盘夹起图",
+          },
+          snowChuck: {
+            name: "澳洲雪花上脑",
+            note: "纹理好看，别烤太久口感更嫩",
+            image: "澳洲雪花上脑纹理近景",
+          },
+          oysterBlade: {
+            name: "安格斯牡蛎肉",
+            note: "部位有记忆点，适合想换口味的人",
+            image: "安格斯牡蛎肉单品近景",
+          },
+          platter: {
+            name: "经典三拼/五拼",
+            note: "几个人来都好分，第一次来也省心",
+            image: "三拼/五拼完整桌面",
+          },
+          blackBeef: {
+            name: "黑牛必点款",
+            note: "肉香直接，第一次来从它开始比较稳",
+            image: "黑牛纹理近景",
+          },
+          charcoal: {
+            name: "果木炭烤肉",
+            note: "烤起来有一点木香，热乎感更明显",
+            image: "果木炭烤盘近景",
+          },
+          grillAssist: {
+            name: "助烤服务",
+            note: "不会烤可以直接说，店员会按现场情况帮忙看火候",
+            image: "店员翻烤或夹肉图",
+          },
+          beefRib: {
+            name: "牛仔骨",
+            note: "当天有没有活动，到店问店员更准确",
+            image: "牛仔骨上桌近景",
+          },
+        },
+        materialProducts: {
+          blackBeef: ["blackBeef", "snowChuck", "oysterBlade", "honeyBeef"],
+          classicPlatter: ["platter", "blackBeef", "honeyBeef"],
+          newDishes: ["honeyBeef", "oysterBlade", "snowChuck"],
+          beefRibGift: ["beefRib", "blackBeef", "platter"],
+          voucher69: ["platter", "blackBeef", "honeyBeef"],
+          memberRights: ["blackBeef", "platter", "grillAssist"],
+          lateMeal: ["charcoal", "honeyBeef", "platter"],
+          auto: ["blackBeef", "platter", "honeyBeef"],
+        },
+        intentProducts: {
+          newProduct: ["honeyBeef", "oysterBlade", "snowChuck"],
+          signature: ["blackBeef", "platter", "snowChuck"],
+          oldCustomer: ["blackBeef", "platter", "honeyBeef"],
+          afterWork: ["platter", "blackBeef", "charcoal"],
+          atmosphere: ["charcoal", "blackBeef", "grillAssist"],
+          benefit: ["platter", "blackBeef", "beefRib"],
+        },
+        timeLines: {
+          morning: ["上午先提醒一下，今天想吃肉的人可以留个选择。", "早上先提醒一下，晚点想吃可以翻出来。"],
+          lunch: ["午饭前刷到，可以先约起来。", "中午想吃口热的，可以先把这条留着。"],
+          afternoon: ["下午先提醒一下，晚饭前刚好有人能看到。", "下午想好晚饭，晚上就不用临时纠结。"],
+          dinner: ["晚饭前看到，可以直接约一桌。", "晚上想吃肉，这条可以先留着。"],
+          lateNight: ["晚上想吃口热的，来之前先问门店安排。", "夜里想吃肉，先问当天门店安排更稳。"],
+        },
+        audienceLines: {
+          newProduct: {
+            oldMembers: ["老朋友也可以试试新口味。", "常来的朋友如果想换口味，可以先加一份。"],
+            workers: ["万博附近下班顺路，可以来尝一份。", "附近上班的朋友，晚饭前可以先留着。"],
+            gathering: ["朋友或家人来，可以少量点一份一起尝。", "几个人一起吃，尝鲜更轻松。"],
+            nightMeat: ["晚上想吃肉，配经典款一起点更稳。", "晚上想尝点不一样的，可以先问店员。"],
+          },
+          signature: {
+            oldMembers: ["老朋友回来，不用重新研究菜单。", "熟客想吃稳的，可以直接点常规必点款。"],
+            workers: ["万博附近下班顺路来，点稳一点更省心。", "附近上班的朋友，晚饭不用纠结太久。"],
+            gathering: ["朋友或家人聚餐，按人数搭一桌就行。", "几个人一起吃，拼盘会更好分。"],
+            nightMeat: ["晚上想吃肉，先点稳的就好。", "夜里吃口热烤肉，别把点餐想复杂。"],
+          },
+          oldCustomer: {
+            oldMembers: ["老会员回来先问权益，再慢慢点餐。", "老朋友进店先问店员，规则别自己猜。"],
+            workers: ["以前在万博附近常来的朋友，可以回来看看。", "附近上班的老客，下班顺路回来坐坐。"],
+            gathering: ["带朋友或家人回来，也可以先让店员帮你搭。", "老朋友回来聚一顿，先问清权益再点餐。"],
+            nightMeat: ["晚上想吃肉的老朋友，回来吃顿热的就行。", "夜里想吃肉，先问当天门店安排。"],
+          },
+          afterWork: {
+            oldMembers: ["老朋友下班回来，先问权益再点餐。", "老会员顺路来，按当天口径帮你看权益。"],
+            workers: ["万博附近上班的朋友，下班可以顺路来。", "附近下班局不用走远，来吃口热的。"],
+            gathering: ["朋友或家人一起，烤肉最适合边吃边聊。", "几个人聚餐，点拼盘会更省心。"],
+            nightMeat: ["晚上想吃肉的人，可以先把这条留着。", "夜里想吃热乎的，来之前先问门店。"],
+          },
+          atmosphere: {
+            oldMembers: ["老朋友看到这一桌，想吃再回来。", "老客回来吃顿热的，也不复杂。"],
+            workers: ["附近下班路过，看到热气就知道吃什么了。", "万博附近的朋友，晚饭可以顺路来。"],
+            gathering: ["朋友或家人围着烤盘，这一桌会更有氛围。", "几个人一桌，桌面看起来更热闹。"],
+            nightMeat: ["晚上想吃肉，看烤盘图最直接。", "夜里想吃热的，先看门店当天安排。"],
+          },
+          benefit: {
+            oldMembers: ["老会员先问权益，再看怎么点更合适。", "老朋友回来，能用什么到店帮你看。"],
+            workers: ["附近上班的朋友，来之前可以先看平台券。", "下班顺路吃肉，先问福利会更清楚。"],
+            gathering: ["几个人聚餐，先问券再点餐会更省心。", "朋友或家人一起吃，能用的福利先核清楚。"],
+            nightMeat: ["晚上想吃肉，来之前先看券和门店口径。", "夜里吃肉想省一点，先进店问清楚。"],
+          },
+        },
+        safeActions: {
+          normal: [
+            "想吃的话到店问店员。",
+            "不会点按人数帮你搭。",
+            "路过万博可以顺路来吃顿热的。",
+            "想吃就来坐一桌，点餐时问店员。",
+          ],
+          benefit: [
+            "具体活动和权益，以当天门店和平台展示为准。",
+            "能不能用、怎么搭，到店按当天口径帮你看。",
+            "福利不要自己猜，进店问店员更快。",
+          ],
+          oldCustomer: [
+            "权益和活动以当天门店口径为准。",
+            "进店先问店员，我们按当天口径帮你看。",
+            "老朋友回来先问清楚，再慢慢点餐。",
+          ],
+        },
+        packs: {
+          newProduct: {
+            fallback: {
+              id: "new-fallback",
+              structure: "productSeed",
+              image: "新品产品近景或烤盘夹起图",
+              lines: ["今天想让老朋友试试新口味。", "{product}，{productNote}。", "先尝一份，再搭经典款更稳。", "{action}"],
+            },
+            templates: [
+              { id: "new-01", structure: "productSeed", image: "新品产品近景或烤盘夹起图", lines: ["今天先推一个新口味。", "{product}，{productNote}。", "{audience}", "{action}"] },
+              { id: "new-02", structure: "staffPick", image: "新品和经典款放一桌", lines: ["常来的朋友如果每次都点老几样，今天可以加一份{product}。", "先少量尝尝，搭配黑牛或拼盘更稳。", "{extra}"] },
+              { id: "new-03", structure: "order", image: "新品上桌加烤盘近景", lines: ["新品不用一次点很多。", "两三个人来，可以一份{product}加一份经典款，边烤边尝。", "{action}"] },
+              { id: "new-04", structure: "daily", image: "店员端新品上桌图", lines: ["{time}", "今天店里上了{product}，口味不复杂，第一次尝鲜也好接受。", "{extra}"] },
+              { id: "new-05", structure: "feedback", image: "新品烤好夹起特写", lines: ["有朋友问最近有没有新东西，可以直接问{product}。", "烤好后香味更明显，夹起来也有食欲。", "{audience}"] },
+              { id: "new-06", structure: "productSeed", image: "新品单品近景", lines: ["想换口味的朋友可以试试新口味。", "{product}上桌不抢戏，和原来常点的肉一起吃更稳。", "{action}"] },
+              { id: "new-07", structure: "staffPick", image: "店员推荐新品", lines: ["今天简单提醒一下：{product}可以点来尝尝。", "不会搭配的话，到店按人数帮你配。", "{extra}"] },
+              { id: "new-08", structure: "productSeed", image: "新品烤盘近景", lines: ["{product}适合想换口味的人。", "先尝一份，再看要不要加经典拼盘。", "{audience}"] },
+              { id: "new-09", structure: "daily", image: "新品上桌和桌面全景", lines: ["如果最近总点一样的肉，可以把{product}当作今天的新选择。", "味道先慢慢试，不用一次点太多。", "{action}"] },
+              { id: "new-10", structure: "daily", image: "新品上桌近景加烤盘图", lines: ["今天新品上桌，想给大家看一下。", "{product}配烤盘热气，看着就想尝一口。", "想换口味的朋友可以到店问店员。"] },
+            ],
+          },
+          signature: {
+            fallback: {
+              id: "sig-fallback",
+              structure: "order",
+              image: "黑牛纹理近景或拼盘完整桌面",
+              lines: ["第一次来不知道点什么，先从{product}开始。", "{productNote}。", "不会点按人数帮你搭。"],
+            },
+            templates: [
+              { id: "sig-01", structure: "order", image: "黑牛纹理近景", lines: ["第一次来不知道点什么，先从{product}开始。", "{productNote}。", "不会点按人数帮你搭。"] },
+              { id: "sig-02", structure: "productSeed", image: "黑牛拼盘完整桌面", lines: ["今天这条给想吃肉的人。", "黑牛和拼盘是比较稳的选择，几个人来都好安排。", "{audience}"] },
+              { id: "sig-03", structure: "order", image: "菜单和烤肉同框", lines: ["点餐不用研究很久。", "先定{product}，再加一个小食或主食，一桌就舒服了。", "{action}"] },
+              { id: "sig-04", structure: "daily", image: "招牌肉品近景", lines: ["今天这桌可以从{product}开始。", "肉上桌一看就有食欲，烤好以后更香。", "{extra}"] },
+              { id: "sig-05", structure: "gathering", image: "朋友聚餐桌面", lines: ["朋友聚餐怕点乱，可以直接问店员按人数搭。", "{product}这种款先上，后面再加菜。", "{audience}"] },
+              { id: "sig-06", structure: "staffPick", image: "烤盘翻面近景", lines: ["想吃肉香明显一点，今天可以点{product}。", "烤的时候别着急，吃热的最舒服。", "{action}"] },
+              { id: "sig-07", structure: "order", image: "两人桌面近景", lines: ["两个人来也能吃得简单：一份{product}，再搭点小食。", "想吃多一点再加拼盘。", "{extra}"] },
+              { id: "sig-08", structure: "order", image: "按人数搭配的一桌", lines: ["来店里不用重新研究菜单。", "想吃稳的先点{product}，店员会按人数帮你调整。"] },
+              { id: "sig-09", structure: "sceneMeal", image: "万博附近门头加桌面", lines: ["万博附近约饭，如果不知道吃什么，烤肉是省心选择。", "{product}先点上，边烤边聊。"] },
+              { id: "sig-10", structure: "staffPick", image: "按人数搭配的一桌", lines: ["今天推荐按这个思路点：先选{product}，再看人数加拼盘。", "简单一点，吃得更舒服。", "{audience}"] },
+            ],
+          },
+          oldCustomer: {
+            fallback: {
+              id: "old-fallback",
+              structure: "oldReturn",
+              image: "门头升级图或老客桌面",
+              lines: ["原九田家万博店现在升级成朴牛牛黑牛烤肉了。", "老朋友回来先问店员，权益和点餐按当天口径给你说明白。"],
+            },
+            templates: [
+              { id: "old-01", structure: "oldReturn", image: "门头升级图", lines: ["原九田家万博店现在升级成朴牛牛黑牛烤肉了。", "老朋友回来先问店员，权益和点餐按当天口径给你说明白。"] },
+              { id: "old-02", structure: "oldReturn", image: "熟悉门头或店内环境", lines: ["熟悉的位置还在，现在是朴牛牛。", "以前常来的老会员，回来吃肉前到店问一下权益就行。"] },
+              { id: "old-03", structure: "feedback", image: "店员接待说明画面", lines: ["有老顾客回来问会员怎么用，这里统一提醒：", "进店先问店员，我们按当天门店口径帮你看。"] },
+              { id: "old-04", structure: "order", image: "老客点餐桌面", lines: ["老朋友回来不用急着点。", "先看看环境，再问权益，想吃什么我们按人数帮你搭一桌。"] },
+              { id: "old-05", structure: "daily", image: "环境升级局部图", lines: ["如果你之前常来九田家万博店，可以回来看看现在的朴牛牛。", "菜品、环境和服务都做了升级。", "{extra}"] },
+              { id: "old-06", structure: "oldReturn", image: "黑牛和拼盘上桌", lines: ["今天这条主要发给老朋友。", "想回来吃肉，先进店问权益，再慢慢点黑牛和拼盘。"] },
+              { id: "old-07", structure: "benefit", image: "会员权益提示物料", lines: ["老会员不用自己研究规则。", "到店把情况说一下，能用什么我们按当天口径帮你核。"] },
+              { id: "old-08", structure: "sceneMeal", image: "万博门店外景或老客桌面", lines: ["原来的老客回来，很多人还是认万博这个位置。", "想吃热烤肉的时候，回来坐一桌就行。"] },
+              { id: "old-09", structure: "productSeed", image: "新口味和经典款同桌", lines: ["老朋友如果想试新口味，可以先点一份{product}。", "权益和活动别自己猜，到店问店员。"] },
+              { id: "old-10", structure: "oldReturn", image: "门头加老客桌面", lines: ["九田家老会员看到这条，可以先留一下。", "现在门店升级了，回来吃肉前问清权益再点餐。"] },
+            ],
+          },
+          afterWork: {
+            fallback: {
+              id: "work-fallback",
+              structure: "sceneMeal",
+              image: "下班时段门头或两三人桌面",
+              lines: ["万博附近下班不知道吃什么，来吃顿热烤肉就行。", "几个人点拼盘，再加一份{product}，边烤边聊。"],
+            },
+            templates: [
+              { id: "work-01", structure: "sceneMeal", image: "下班时段门头或两三人桌面", lines: ["万博附近下班不知道吃什么，来吃顿热烤肉就行。", "几个人点拼盘，再加一份{product}，边烤边聊。"] },
+              { id: "work-02", structure: "sceneMeal", image: "烤盘热气加桌面", lines: ["忙了一天，晚上吃点现烤的肉会舒服很多。", "下班顺路来，按人数帮你搭一桌。", "{audience}"] },
+              { id: "work-03", structure: "gathering", image: "朋友聚餐桌面", lines: ["朋友临时约饭，烤肉比想半天更省事。", "到店说几个人、想吃什么口味，店员帮你配。"] },
+              { id: "work-04", structure: "order", image: "拼盘加小食桌面", lines: ["晚饭前刷到这条，可以约个下班局。", "{product}配拼盘，热热乎乎吃一顿。"] },
+              { id: "work-05", structure: "daily", image: "店内桌面或烤盘近景", lines: ["如果今天不想做饭，也不想纠结外卖，来店里坐下烤一会儿。", "吃肉、聊天都省心。", "{extra}"] },
+              { id: "work-06", structure: "sceneMeal", image: "万博附近门头", lines: ["附近上班的朋友，下班路过万博可以顺路来吃顿热的。", "不会点就按人数帮你搭。"] },
+              { id: "work-07", structure: "order", image: "两三人小桌", lines: ["两三个人的小局不用复杂。", "先点{product}，再加几样爱吃的小食，边烤边聊。"] },
+              { id: "work-08", structure: "gathering", image: "朋友围桌吃肉", lines: ["今天想约朋友吃饭，可以选烤肉。", "桌上有热气，话题也容易接上。", "{audience}"] },
+              { id: "work-09", structure: "lateNight", image: "夜间门头或晚间桌面", lines: ["晚上想吃肉的人先留一下。", "来之前不用想太多，到店问店员怎么点更快。"] },
+              { id: "work-10", structure: "sceneMeal", image: "下班后门店外景", lines: ["下班后最省心的吃法：坐下、点肉、慢慢烤。", "万博附近的朋友可以顺路来。"] },
+            ],
+          },
+          atmosphere: {
+            fallback: {
+              id: "atm-fallback",
+              structure: "daily",
+              image: "烤盘近景加桌面全景",
+              lines: ["今天店里烤盘一热，烟火气就起来了。", "肉上桌的时候香味很直接，想吃热烤肉可以来坐一会儿。"],
+            },
+            templates: [
+              { id: "atm-01", structure: "daily", image: "烤盘近景加桌面全景", lines: ["今天店里烤盘一热，烟火气就起来了。", "肉上桌的时候香味很直接，想吃热烤肉可以来坐一会儿。"] },
+              { id: "atm-02", structure: "daily", image: "门头、烤盘、整桌三张图", lines: ["晚饭不知道吃什么，围着烤盘吃一顿就挺舒服。", "有热气、有肉香，也适合几个人边吃边聊。"] },
+              { id: "atm-03", structure: "feedback", image: "顾客返图或桌面图", lines: ["有客人发来桌面图，这一桌看着就舒服。", "想吃肉的时候，可以照着这一桌点。"] },
+              { id: "atm-04", structure: "daily", image: "烤盘近景加桌面图", lines: ["今天店里就是正常热乎的一天。", "烤盘近景加桌面看着很有食欲，想吃肉就来坐一桌。"] },
+              { id: "atm-05", structure: "daily", image: "桌面热气或烤肉夹起图", lines: ["桌面热起来的时候，看着就能感觉到热乎。", "想吃肉就来坐一会儿。"] },
+              { id: "atm-06", structure: "sceneMeal", image: "整桌和烤盘近景", lines: ["人多的时候，整桌烤肉看着最有氛围。", "朋友聚餐就适合这种热热闹闹的一桌。"] },
+              { id: "atm-07", structure: "daily", image: "肉上桌、烤盘、朋友同桌", lines: ["肉上桌了，烤盘热了，朋友也坐下了。", "今天想吃这一口，到店问店员就行。"] },
+              { id: "atm-08", structure: "serviceAssist", image: "店员助烤或翻烤图", lines: ["店员帮忙助烤的时候，吃饭会轻松很多。", "有人看火候，朋友聊天也不耽误吃肉。"] },
+              { id: "atm-09", structure: "productSeed", image: "果木炭烤肉近景加整桌", lines: ["果木炭烤肉一上桌，热气和香味都很明显。", "想吃烟火气一点的，可以来试试。"] },
+              { id: "atm-10", structure: "feedback", image: "顾客桌面或返图", lines: ["顾客这桌看着挺舒服。", "几个人围着烤盘吃肉，这种一桌最适合晚饭和聚餐。"] },
+            ],
+          },
+          benefit: {
+            fallback: {
+              id: "ben-fallback",
+              structure: "benefit",
+              image: "平台券截图加菜品桌面",
+              lines: ["今天主要提醒一下福利。", "券和会员权益以门店/平台当天展示为准，到店我们帮你看怎么用。"],
+            },
+            templates: [
+              { id: "ben-01", structure: "benefit", image: "平台券截图加菜品桌面", lines: ["今天主要提醒一下福利。", "券和会员权益以门店/平台当天展示为准，到店我们帮你看怎么用。"] },
+              { id: "ben-02", structure: "benefit", image: "平台券截图", lines: ["想吃得划算一点，来之前可以先看平台券。", "进店再问店员，能不能用、怎么搭按当天口径来。"] },
+              { id: "ben-03", structure: "benefit", image: "会员权益提示物料", lines: ["有权益先问权益，有平台券先看券。", "点餐前问清楚，吃起来更省心。"] },
+              { id: "ben-04", structure: "benefit", image: "券说明页加门店桌面", lines: ["手里有券的朋友，来之前看一下使用说明。", "到店不会用也没关系，店员帮你核一遍。"] },
+              { id: "ben-05", structure: "benefit", image: "门店福利物料加烤肉", lines: ["今天如果想吃烤肉又想省一点，到店先问福利再点餐。", "具体以当天门店和平台展示为准。"] },
+              { id: "ben-06", structure: "benefit", image: "店员展示福利牌", lines: ["福利不要自己猜。", "有没有、能不能叠加、怎么用，到店问店员最省事。"] },
+              { id: "ben-07", structure: "order", image: "券截图加拼盘桌面", lines: ["这条发给准备来吃肉的人：先看券，再点肉。", "几个人来我们按人数帮你搭。"] },
+              { id: "ben-08", structure: "benefit", image: "会员权益提示和门店桌面", lines: ["如果当天有会员权益或团购券，到店会按门店口径说明。", "想吃得明白一点，点餐前先问。"] },
+              { id: "ben-09", structure: "productSeed", image: "产品近景加平台券截图", lines: ["想吃{product}又想搭福利，可以到店问店员。", "活动和券都以当天展示为准。"] },
+              { id: "ben-10", structure: "benefit", image: "平台券截图或收银台提示", lines: ["今天不写复杂活动，只提醒一句：有券先带着。", "进店让店员帮你看能不能用。"] },
+            ],
+          },
+        },
+        qualityTips: [
+          "发前看一眼：像朋友提醒，只讲一件事，活动按当天口径。",
+          "小检查：没有夸张承诺，图片用当天实拍。",
+          "发布前确认：福利、库存、营业时间按门店当天口径删改。",
+          "门店可用标准：顾客看完知道吃什么、怎么问、配什么图。",
+        ],
+      };
 
       function pick(items) {
         return items[Math.floor(Math.random() * items.length)];
@@ -1377,194 +1675,228 @@
       }
 
       function cleanText(text) {
-        return data.bannedWords.reduce((current, word) => current.replaceAll(word, ""), text);
+        return text
+          .replace(/\s+\n/g, "\n")
+          .replace(/\n{3,}/g, "\n\n")
+          .replace(/[ \t]{2,}/g, " ")
+          .replace(/。。+/g, "。")
+          .trim();
       }
 
       function getEffectiveMaterial() {
         if (state.material !== "auto") return state.material;
-        return data.intent[state.intent].defaultMaterial;
-      }
-
-      function getMaterialLine(materialKey) {
-        const material = data.material[materialKey];
-        const pool = safeBenefitToggle.checked ? material.safe : material.confident;
-        return pick(pool || material.safe);
-      }
-
-      function getProductKey(materialKey, structure) {
-        if (structure === "serviceAssist") return "grillAssist";
-        if (structure === "daily" && Math.random() > 0.58) return "fruitwoodCharcoal";
-        const products = data.materialProducts[materialKey] || data.materialProducts.blackBeef;
-        return pick(products);
-      }
-
-      function getProductLine(productKey, structure) {
-        const product = data.productDetails[productKey];
-        const pool = structure === "staffPick" ? product.staff : product.lines;
-        return pick(pool || product.lines);
-      }
-
-      function getHook(structure, materialKey) {
-        const hookPools = {
-          productSeed: ["product", "pain"],
-          staffPick: ["product", "pain"],
-          sceneMeal: ["location", "time", "pain"],
-          gathering: ["crowd", "location", "pain"],
-          serviceAssist: ["pain", "product"],
-          lateNight: ["time", "pain"],
-          daily: ["time", "location"],
-          feedback: ["crowd", "location"],
-          benefit: ["pain", "location", "time"],
-          order: ["pain", "product"],
-          oldReturn: ["location", "crowd"],
-        };
-        const hookType = pick(hookPools[structure] || ["pain"]);
-        if (hookType === "product") {
-          const productKey = getProductKey(materialKey, structure);
-          return { text: pick(data.hooks.product), hookType, productKey };
-        }
-        return { text: pick(data.hooks[hookType]), hookType, productKey: getProductKey(materialKey, structure) };
-      }
-
-      function getSceneLeaf(structure) {
-        const scene = data.clover.scene[structure] || data.clover.scene.common;
-        return pick(scene);
-      }
-
-      function getTrustLeaf(structure) {
-        if (structure === "serviceAssist") return pick(data.clover.trust.service);
-        if (structure === "feedback") return pick(data.clover.trust.feedback);
-        if (structure === "oldReturn") return pick(data.clover.trust.oldReturn);
-        return pick(data.clover.trust.daily);
-      }
-
-      function getActionLine(structure) {
-        if (structure === "benefit" || state.intent === "benefit" || state.intent === "oldCustomer") {
-          return "具体活动和权益，以当天门店口径为准。";
-        }
-        return pick(data.clover.action);
+        return data.intent[state.intent].defaultMaterial || "auto";
       }
 
       function maybeEmoji() {
         if (!emojiToggle.checked) return "";
-        if (Math.random() < 0.32) return "";
-        return `${pick(data.emojis)} `;
+        if (state.rewrite === "short" && Math.random() < 0.72) return "";
+        if (Math.random() < 0.52) return "";
+        return `${pick(["🥩", "🔥", "🍖", "📍"])} `;
       }
 
       function normalizeExtra() {
-        const raw = extraInput.value.trim().replace(/\s+/g, " ");
+        let raw = extraInput.value.trim().replace(/\s+/g, " ");
         if (!raw) return "";
-        return raw.length > 36 ? raw.slice(0, 36) : raw;
+        contentV22.extraReplacements.forEach(([from, to]) => {
+          raw = raw.replaceAll(from, to);
+        });
+        raw = raw.replace(/[。！？!?,，、]+$/g, "").slice(0, 28);
+        if (!raw || contentV22.badPhrases.some((phrase) => raw.includes(phrase))) return "";
+        return `今天补充：${raw}。`;
       }
 
-      function chooseStructure() {
-        const intentStructures = data.intentStructures[state.intent] || data.structures;
-        if (state.rewrite === "daily") return pick(intentStructures.filter((item) => ["daily", "feedback", "staffPick", "oldReturn"].includes(item)).concat(["daily"]));
-        if (state.rewrite === "short") return pick(intentStructures.filter((item) => !["lateNight", "gathering"].includes(item)).concat(["productSeed", "sceneMeal"]));
-        if (state.rewrite === "scene") return pick(intentStructures.filter((item) => ["sceneMeal", "gathering", "daily", "feedback", "serviceAssist"].includes(item)).concat(["sceneMeal"]));
-        return pick(intentStructures);
-      }
+      function chooseProductKey(template) {
+        if (template.id === "atm-09") return "charcoal";
+        if (template.structure === "serviceAssist") return "grillAssist";
+        if (state.intent === "benefit" && state.material === "beefRibGift") return "beefRib";
 
-      function buildLines(structure) {
-        const intent = data.intent[state.intent];
-        const tone = data.tone[state.tone];
-        const time = data.time[state.time];
-        const target = data.target[state.target];
         const materialKey = getEffectiveMaterial();
-        const materialLine = getMaterialLine(materialKey);
-        const hook = getHook(structure, materialKey);
-        const productLine = getProductLine(hook.productKey, structure);
-        const sceneLeaf = getSceneLeaf(structure);
-        const trustLeaf = getTrustLeaf(structure);
-        const actionLine = getActionLine(structure);
-        const extra = normalizeExtra();
-        const opener = `${maybeEmoji()}${pick(tone.openers)}`;
-        const timeCue = pick(time.cues);
-        const legacyStructure = intent.angles[structure] ? structure : pick(Object.keys(intent.angles));
-        const intentLine = pick(intent.angles[legacyStructure]);
-        const targetLine = state.rewrite === "short" ? pick(target.short) : pick(target.cues);
-        const closer = pick(tone.closers);
-        const extraLine = extra ? `今天补充：${extra}` : "";
+        const materialPool = state.material === "auto" ? null : contentV22.materialProducts[materialKey];
+        const intentPool = contentV22.intentProducts[state.intent] || contentV22.intentProducts.signature;
+        return pick(materialPool || intentPool || contentV22.materialProducts.auto);
+      }
 
-        const templates = {
-          productSeed: [hook.text, productLine, targetLine, extraLine, actionLine],
-          sceneMeal: [hook.text, sceneLeaf, materialLine, extraLine, actionLine],
-          gathering: [hook.text, sceneLeaf, targetLine, extraLine, actionLine],
-          serviceAssist: [hook.text, getProductLine("grillAssist", structure), trustLeaf, extraLine, actionLine],
-          lateNight: [hook.text, sceneLeaf, productLine, extraLine, "晚上来之前，可以先问问当天安排。"],
-          daily: [timeCue, intentLine, trustLeaf, extraLine, pick(["不写太满，大家看真实状态就行。", "图片用今天实拍，真实比精修更好。", closer])],
-          staffPick: [opener, productLine, pick(data.productDetails[hook.productKey].staff), extraLine, actionLine],
-          feedback: [hook.text, trustLeaf, materialLine, extraLine, actionLine],
-          benefit: [opener, intentLine, materialLine, extraLine, actionLine],
-          order: [hook.text, intentLine, productLine, extraLine, pick(["不会点也没关系，我们按人数帮你搭。", "几个人来都能帮你搭一桌。", "想吃得稳一点，就这样点。"])],
-          oldReturn: [opener, intentLine, trustLeaf, extraLine, actionLine],
+      function getAudienceLine() {
+        const pool = contentV22.audienceLines[state.intent]?.[state.target] || [];
+        if (!pool.length) return "";
+        if (state.rewrite === "short" && Math.random() < 0.55) return "";
+        if (Math.random() < 0.28) return "";
+        return pick(pool);
+      }
+
+      function getTimeLine() {
+        return pick(contentV22.timeLines[state.time] || contentV22.timeLines.morning);
+      }
+
+      function getActionLine() {
+        if (state.intent === "benefit") return pick(contentV22.safeActions.benefit);
+        if (state.intent === "oldCustomer") return pick(contentV22.safeActions.oldCustomer);
+        if (state.rewrite === "short") return pick(["到店问店员就行。", "不会点按人数帮你搭。", "路过万博可以顺路来吃顿热的。"]);
+        return pick(contentV22.safeActions.normal);
+      }
+
+      function applySlots(line, context) {
+        return Object.entries(context).reduce((current, [key, value]) => current.replaceAll(`{${key}}`, value || ""), line);
+      }
+
+      function getTemplatePool() {
+        const pack = contentV22.packs[state.intent] || contentV22.packs.newProduct;
+        const allTemplates = pack.templates.slice();
+        const preferredStructures = {
+          daily: ["daily", "feedback", "staffPick", "oldReturn"],
+          short: ["productSeed", "order", "sceneMeal", "benefit", "oldReturn"],
+          scene: ["sceneMeal", "gathering", "daily", "feedback", "serviceAssist"],
         };
 
-        let lines = templates[structure].filter(Boolean);
+        const preferred = preferredStructures[state.rewrite];
+        if (!preferred) return allTemplates;
 
-        if (state.rewrite === "scene") {
-          lines.splice(Math.min(2, lines.length), 0, pick(["建议配一张烤盘近景，看着更像现场。", "图片用今天实拍就好，真实比精修更好。"]));
-        }
-
-        return lines.filter((line, index, arr) => arr.indexOf(line) === index);
+        const filtered = allTemplates.filter((template) => preferred.includes(template.structure));
+        return filtered.length >= 4 ? filtered : allTemplates;
       }
 
-      function fitLines(lines) {
-        const minimum = state.rewrite === "short" ? 42 : 50;
-        const maximum = state.rewrite === "short" ? 82 : 110;
-        let next = lines.slice();
-        const removable = ["今天补充：", "建议配一张", "图片用今天", "具体活动", "先留着", "路过万博"];
+      function fitLines(lines, context) {
+        const maximum = state.rewrite === "short" ? 86 : 110;
+        const minimum = state.rewrite === "short" ? 38 : 50;
+        let next = lines
+          .map((line) => line.replace(/\s+/g, " ").trim())
+          .filter(Boolean)
+          .filter((line, index, arr) => arr.indexOf(line) === index);
 
-        while (textLength(next.join("")) > maximum && next.length > 3) {
-          const index = next.findIndex((line) => removable.some((prefix) => line.startsWith(prefix)));
-          next.splice(index >= 0 ? index : next.length - 2, 1);
+        const removeLine = (predicate) => {
+          const index = next.findIndex(predicate);
+          if (index >= 0) next.splice(index, 1);
+          return index >= 0;
+        };
+
+        while (textLength(next.join("")) > maximum && next.length > 2) {
+          if (removeLine((line) => line === context.extraLine)) continue;
+          if (removeLine((line) => line === context.audienceLine)) continue;
+          if (removeLine((line) => line === context.timeLine)) continue;
+          next.splice(Math.max(1, next.length - 2), 1);
         }
 
-        if (textLength(next.join("")) < minimum) {
-          const target = data.target[state.target];
-          next.splice(next.length - 1, 0, pick(target.short));
+        if (textLength(next.join("")) < minimum && context.audienceLine && !next.includes(context.audienceLine)) {
+          next.splice(Math.max(1, next.length - 1), 0, context.audienceLine);
+        }
+
+        if (textLength(next.join("")) < minimum && context.actionLine && !next.includes(context.actionLine)) {
+          next.push(context.actionLine);
         }
 
         return next;
       }
 
-      function buildMoment() {
-        let structure = chooseStructure();
-        let lines = fitLines(buildLines(structure));
-        let text = cleanText(lines.join("\n"));
-        let signature = `${state.intent}-${state.target}-${state.time}-${state.tone}-${state.material}-${structure}-${text}`;
+      function renderTemplate(template) {
+        const product = contentV22.products[chooseProductKey(template)] || contentV22.products.blackBeef;
+        const context = {
+          emoji: maybeEmoji(),
+          product: product.name,
+          productNote: product.note,
+          time: getTimeLine(),
+          audience: getAudienceLine(),
+          extra: normalizeExtra(),
+          action: getActionLine(),
+        };
+        context.timeLine = context.time;
+        context.audienceLine = context.audience;
+        context.extraLine = context.extra;
+        context.actionLine = context.action;
 
-        if (signature === lastSignature) {
-          structure = chooseStructure();
-          lines = fitLines(buildLines(structure));
-          text = cleanText(lines.join("\n"));
-          signature = `${state.intent}-${state.target}-${state.time}-${state.tone}-${state.material}-${structure}-${text}`;
+        const rendered = template.lines.map((line) => applySlots(line, context));
+        const lines = fitLines(rendered, context);
+        const text = cleanText(`${context.emoji}${lines.join("\n")}`);
+
+        return {
+          text,
+          structure: template.structure,
+          templateId: template.id,
+          image: template.image || product.image,
+          product: product.name,
+        };
+      }
+
+      function qualityCheck(result) {
+        const text = result.text;
+        const length = textLength(text);
+        const maximum = state.rewrite === "short" ? 86 : 110;
+        const minimum = state.rewrite === "short" ? 38 : 50;
+        const allBadWords = data.bannedWords.concat(contentV22.badPhrases);
+        const compact = text.replace(/\s/g, "");
+
+        if (!text || /undefined|null|\{|\}/.test(text)) return { pass: false, reason: "empty-slot" };
+        if (length > maximum || length < minimum) return { pass: false, reason: "length" };
+        if (allBadWords.some((word) => word && text.includes(word))) return { pass: false, reason: "bad-word" };
+        if (/23点|营业到|全天供应|库存|剩余|抢购/.test(text)) return { pass: false, reason: "strong-promise" };
+        if (state.intent !== "benefit" && /69抵100|平台券|团购券|代金券/.test(text)) return { pass: false, reason: "benefit-conflict" };
+        if (!["benefit", "oldCustomer"].includes(state.intent) && /会员权益|九田家/.test(text)) return { pass: false, reason: "member-conflict" };
+        if (state.intent === "newProduct" && /权益|会员|九田家|老会员/.test(text)) return { pass: false, reason: "new-product-conflict" };
+        if (new Set(text.split("\n")).size !== text.split("\n").length) return { pass: false, reason: "duplicate-line" };
+
+        let score = Math.random();
+        if (compact === lastSignature) score += 5;
+        if (result.templateId === lastTemplateKey) score += 4;
+        if (length > 98) score += 0.4;
+        return { pass: true, score };
+      }
+
+      function buildCandidate() {
+        return renderTemplate(pick(getTemplatePool()));
+      }
+
+      function buildFallbackCandidate() {
+        const pack = contentV22.packs[state.intent] || contentV22.packs.newProduct;
+        const fallback = renderTemplate(pack.fallback);
+        const safeText = fallback.text
+          .split("\n")
+          .filter((line) => line && !contentV22.badPhrases.some((phrase) => line.includes(phrase)))
+          .join("\n");
+        return { ...fallback, text: cleanText(safeText) };
+      }
+
+      function buildMoment() {
+        const candidates = [];
+
+        for (let index = 0; index < 48; index += 1) {
+          const candidate = buildCandidate();
+          const check = qualityCheck(candidate);
+          if (check.pass) candidates.push({ ...candidate, score: check.score });
         }
 
-        lastSignature = signature;
-        return { text, structure };
+        const selected = candidates.sort((a, b) => a.score - b.score)[0] || buildFallbackCandidate();
+        lastSignature = selected.text.replace(/\s/g, "");
+        lastTemplateKey = selected.templateId;
+        return selected;
       }
 
-      function buildImageSuggestion(structure) {
-        const intent = data.intent[state.intent];
-        const material = data.material[getEffectiveMaterial()];
-        const structureImages = data.structureImages[structure] || ["门店实拍", "烤肉近景"];
-        const backup = ["门头实拍", "烤肉近景", "桌面全景", "员工助烤", "顾客返图"];
-        const first = pick(structureImages);
-        const second = pick(intent.image.concat(material.image));
-        const third = pick(backup);
-        return `配图：${first} + ${second}。素材不够时用${third}，尽量发今天真实现场。`;
+      function buildImageSuggestion(result) {
+        if (state.intent === "benefit" || result.structure === "benefit") {
+          return `配图：${result.image}。截图和活动文字发前核对当天展示。`;
+        }
+        if (state.intent === "oldCustomer" || result.structure === "oldReturn") {
+          return `配图：${result.image}。能拍门头、老客桌面或店员说明更合适。`;
+        }
+        if (result.structure === "serviceAssist") {
+          return `配图：${result.image}。拍到店员夹肉或翻面，会更贴近这条文案。`;
+        }
+        if (["sceneMeal", "gathering", "daily", "feedback"].includes(result.structure)) {
+          return `配图：${result.image}。尽量有烤盘热气、整桌或顾客桌面。`;
+        }
+        return `配图：${result.image}。再补一张烤盘近景，朋友圈会更直观。`;
       }
 
-      function buildQualityTip() {
-        return pick(data.qualityTips);
+      function buildQualityTip(result) {
+        if (result.structure === "benefit") return "发前看一眼：券、活动、会员权益按当天门店口径。";
+        if (result.structure === "oldReturn") return "发前看一眼：老会员权益别写死，到店按当天口径说明。";
+        return pick(contentV22.qualityTips);
       }
 
       function updateOutput(result) {
         currentMomentText = result.text;
         output.textContent = result.text;
-        imageSuggestion.textContent = buildImageSuggestion(result.structure);
-        qualityTip.textContent = buildQualityTip();
+        imageSuggestion.textContent = buildImageSuggestion(result);
+        qualityTip.textContent = buildQualityTip(result);
         charCount.textContent = `${textLength(result.text)}字`;
         resultMeta.textContent = `${data.intent[state.intent].label} · ${data.structureLabels[result.structure] || "门店日常"}`;
       }
