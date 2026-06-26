@@ -29,12 +29,14 @@
 
       html {
         min-width: 320px;
+        overflow-x: hidden;
         background: var(--bg);
       }
 
       body {
         margin: 0;
         min-height: 100vh;
+        overflow-x: hidden;
         color: var(--text);
         background:
           linear-gradient(180deg, rgba(7, 193, 96, 0.12), rgba(243, 245, 242, 0) 260px),
@@ -57,6 +59,7 @@
 
       .app {
         width: min(100%, 760px);
+        min-width: 0;
         margin: 0 auto;
         padding: 16px 14px calc(104px + env(safe-area-inset-bottom));
       }
@@ -104,6 +107,7 @@
       .panel {
         margin: 12px 0;
         padding: 14px;
+        min-width: 0;
         border: 1px solid var(--line);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.94);
@@ -135,10 +139,29 @@
 
       .field {
         margin-top: 18px;
+        min-width: 0;
       }
 
       .field:first-child {
         margin-top: 0;
+      }
+
+      .today-brief {
+        margin-top: 18px;
+        padding: 12px;
+        min-width: 0;
+        border: 1px solid rgba(7, 193, 96, 0.16);
+        border-radius: 8px;
+        background: rgba(7, 193, 96, 0.045);
+      }
+
+      .today-brief .section-title {
+        margin-bottom: 10px;
+      }
+
+      .brief-grid {
+        display: grid;
+        gap: 10px;
       }
 
       label,
@@ -159,6 +182,7 @@
 
       .intent-card {
         min-height: 82px;
+        min-width: 0;
         padding: 11px 10px;
         border: 1px solid var(--line);
         border-radius: 8px;
@@ -190,6 +214,7 @@
 
       .chip {
         min-height: 42px;
+        min-width: 0;
         padding: 9px 10px;
         border: 1px solid var(--line);
         border-radius: 8px;
@@ -224,6 +249,7 @@
 
       textarea {
         width: 100%;
+        min-width: 0;
         min-height: 86px;
         resize: vertical;
         padding: 12px;
@@ -237,6 +263,12 @@
 
       textarea::placeholder {
         color: #9aa69f;
+      }
+
+      .brief-input {
+        min-height: 56px;
+        font-size: 14px;
+        line-height: 1.55;
       }
 
       .advanced {
@@ -343,6 +375,54 @@
         background: #fff;
       }
 
+      .candidate-list {
+        display: grid;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .candidate-card {
+        padding: 13px;
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .candidate-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .candidate-title {
+        min-width: 0;
+      }
+
+      .candidate-title strong {
+        display: block;
+        color: #295a3f;
+        font-size: 15px;
+        line-height: 1.35;
+      }
+
+      .candidate-title small {
+        display: block;
+        margin-top: 2px;
+        color: var(--subtle);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .candidate-count {
+        flex: 0 0 auto;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
       .moment-user {
         display: grid;
         grid-template-columns: 42px minmax(0, 1fr);
@@ -423,7 +503,7 @@
 
       .copy-button {
         width: 100%;
-        min-height: 58px;
+        min-height: 54px;
         margin-top: 12px;
         border: 0;
         border-radius: 8px;
@@ -433,6 +513,11 @@
         font-size: 17px;
         font-weight: 900;
         cursor: pointer;
+      }
+
+      .copy-button.copied {
+        background: var(--wechat-dark);
+        box-shadow: none;
       }
 
       .rewrite-row {
@@ -464,6 +549,7 @@
       .secondary-button,
       .primary-button {
         min-height: 48px;
+        min-width: 0;
         border: 0;
         border-radius: 8px;
         font-size: 15px;
@@ -505,6 +591,7 @@
 
       .sticky-inner {
         width: min(100%, 760px);
+        min-width: 0;
         margin: 0 auto;
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -573,6 +660,10 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .brief-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
         .switches {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -582,6 +673,87 @@
           justify-content: end;
         }
       }
+
+      @media (max-width: 520px) {
+        body {
+          width: min(100%, 390px);
+        }
+
+        .app {
+          width: 100%;
+          margin-right: 0;
+          margin-left: 0;
+          padding-right: 10px;
+          padding-left: 10px;
+        }
+
+        .sticky-bar {
+          right: auto;
+          width: min(100%, 390px);
+          padding-right: 10px;
+          padding-left: 10px;
+        }
+
+        .sticky-inner {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .app {
+          padding-right: 10px;
+          padding-left: 10px;
+        }
+
+        .panel {
+          padding: 12px;
+        }
+
+        .result-panel {
+          padding: 0;
+        }
+
+        .result-title,
+        .candidate-list {
+          padding-right: 12px;
+          padding-left: 12px;
+        }
+
+        .intent-grid,
+        .chip-group {
+          gap: 8px;
+        }
+
+        .intent-card {
+          min-height: 78px;
+          padding: 10px 8px;
+        }
+
+        .chip {
+          padding-right: 7px;
+          padding-left: 7px;
+          font-size: 13px;
+        }
+
+        textarea {
+          padding-right: 11px;
+          padding-left: 11px;
+        }
+
+        .today-brief,
+        .candidate-card {
+          padding: 11px;
+        }
+
+        .sticky-bar {
+          padding-right: 10px;
+          padding-left: 10px;
+        }
+
+        .sticky-inner {
+          gap: 8px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -589,10 +761,10 @@
       <header class="hero">
         <div class="eyebrow">
           <span>朴牛牛黑牛烤肉 · 门店员工版</span>
-          <span class="version">v2.2</span>
+          <span class="version">v2.3</span>
         </div>
         <h1>朋友圈生成器</h1>
-        <p>少选几项，生成一条像店里人自己发的短文案。复制按钮放大了，生成后直接发朋友圈。</p>
+        <p>少选几项，填一句今日口径，一次生成 3 条可选文案。门店员工挑一条复制就能发。</p>
       </header>
 
       <section class="panel" aria-labelledby="quick-form-title">
@@ -641,13 +813,40 @@
           </div>
         </div>
 
-        <div class="field">
-          <label for="extra">简单补充</label>
-          <textarea
-            id="extra"
-            maxlength="70"
-            placeholder="可不填。例如：今天有新品 / 有顾客返图 / 晚上直播 / 牛肉状态不错"
-          ></textarea>
+        <div class="today-brief" aria-labelledby="brief-title">
+          <div class="section-title">
+            <h2 id="brief-title">今日口径</h2>
+            <p class="hint">不填也能生成</p>
+          </div>
+          <div class="brief-grid">
+            <div class="field">
+              <label for="todayFact">今天有什么</label>
+              <textarea
+                class="brief-input"
+                id="todayFact"
+                maxlength="42"
+                placeholder="新品 / 顾客返图 / 直播 / 牛肉看着不错"
+              ></textarea>
+            </div>
+            <div class="field">
+              <label for="todayReminder">今天要提醒</label>
+              <textarea
+                class="brief-input"
+                id="todayReminder"
+                maxlength="42"
+                placeholder="福利 / 会员 / 下班聚餐 / 老客回来"
+              ></textarea>
+            </div>
+            <div class="field">
+              <label for="todayRisk">今天不能写死</label>
+              <textarea
+                class="brief-input"
+                id="todayRisk"
+                maxlength="42"
+                placeholder="活动不确定 / 库存不确定 / 营业时间不确定"
+              ></textarea>
+            </div>
+          </div>
         </div>
 
         <details class="advanced">
@@ -710,31 +909,11 @@
 
       <section class="panel result-panel" aria-labelledby="result-title">
         <div class="result-title">
-          <h2 id="result-title">复制这条朋友圈</h2>
-          <span class="count" id="charCount">0字</span>
+          <h2 id="result-title">选一条复制</h2>
+          <span class="count" id="batchCount">3条可选</span>
         </div>
 
-        <div class="moment-preview">
-          <div class="moment-user">
-            <div class="avatar" aria-hidden="true">朴</div>
-            <div class="moment-name">
-              <strong>朴牛牛万博店</strong>
-              <small id="resultMeta">刚刚 · 门店实拍</small>
-            </div>
-          </div>
-
-          <div class="moment-text" id="momentOutput" tabindex="0" aria-live="polite"></div>
-          <div class="image-tip" id="imageSuggestion">配图：先点“生成朋友圈”，这里会给一条建议。</div>
-          <div class="quality-tip" id="qualityTip">检查：像朋友发的、只说一件事、发前核对当天口径。</div>
-
-          <button class="copy-button" type="button" id="copyButton">复制这条朋友圈</button>
-
-          <div class="rewrite-row" aria-label="快速改写">
-            <button class="text-button" type="button" data-rewrite="daily">更日常</button>
-            <button class="text-button" type="button" data-rewrite="short">更短</button>
-            <button class="text-button" type="button" data-rewrite="scene">更有现场感</button>
-          </div>
-        </div>
+        <div class="candidate-list" id="candidateList" aria-live="polite"></div>
 
         <p class="note">提醒：如果当天活动、库存、营业时间没确认，发之前先按门店当天口径删改一句。</p>
       </section>
@@ -742,8 +921,8 @@
 
     <div class="sticky-bar">
       <div class="sticky-inner">
-        <button class="secondary-button" type="button" id="regenerateButton">换一条</button>
-        <button class="primary-button" type="button" id="generateButton">生成朋友圈</button>
+        <button class="secondary-button" type="button" id="regenerateButton">换一批</button>
+        <button class="primary-button" type="button" id="generateButton">生成3条</button>
       </div>
     </div>
 
@@ -1350,24 +1529,28 @@
         rewrite: "normal",
       };
 
+      const STORAGE_KEY = "puniuniuMomentsV23";
+      const batchVariants = [
+        { key: "daily", label: "日常版", desc: "像店员自然发" },
+        { key: "short", label: "短句版", desc: "更短，更适合直接发" },
+        { key: "scene", label: "现场版", desc: "更强调画面和氛围" },
+      ];
+
       const groups = document.querySelectorAll("[data-group]");
-      const extraInput = document.getElementById("extra");
+      const todayFactInput = document.getElementById("todayFact");
+      const todayReminderInput = document.getElementById("todayReminder");
+      const todayRiskInput = document.getElementById("todayRisk");
       const emojiToggle = document.getElementById("emojiToggle");
       const safeBenefitToggle = document.getElementById("safeBenefitToggle");
-      const output = document.getElementById("momentOutput");
-      const charCount = document.getElementById("charCount");
-      const imageSuggestion = document.getElementById("imageSuggestion");
-      const qualityTip = document.getElementById("qualityTip");
-      const resultMeta = document.getElementById("resultMeta");
+      const candidateList = document.getElementById("candidateList");
+      const batchCount = document.getElementById("batchCount");
       const toast = document.getElementById("toast");
       const generateButton = document.getElementById("generateButton");
       const regenerateButton = document.getElementById("regenerateButton");
-      const copyButton = document.getElementById("copyButton");
-      const rewriteButtons = document.querySelectorAll("[data-rewrite]");
 
-      let currentMomentText = "";
       let lastSignature = "";
       let lastTemplateKey = "";
+      let currentBatch = [];
 
       const contentV22 = {
         badPhrases: [
@@ -1574,7 +1757,7 @@
               { id: "sig-07", structure: "order", image: "两人桌面近景", lines: ["两个人来也能吃得简单：一份{product}，再搭点小食。", "想吃多一点再加拼盘。", "{extra}"] },
               { id: "sig-08", structure: "order", image: "按人数搭配的一桌", lines: ["来店里不用重新研究菜单。", "想吃稳的先点{product}，店员会按人数帮你调整。"] },
               { id: "sig-09", structure: "sceneMeal", image: "万博附近门头加桌面", lines: ["万博附近约饭，如果不知道吃什么，烤肉是省心选择。", "{product}先点上，边烤边聊。"] },
-              { id: "sig-10", structure: "staffPick", image: "按人数搭配的一桌", lines: ["今天推荐按这个思路点：先选{product}，再看人数加拼盘。", "简单一点，吃得更舒服。", "{audience}"] },
+              { id: "sig-10", structure: "staffPick", image: "按人数搭配的一桌", lines: ["今天推荐按这个思路点：先选{product}，再按人数加肉和小食。", "简单一点，吃得更舒服。", "{audience}"] },
             ],
           },
           oldCustomer: {
@@ -1608,7 +1791,7 @@
               { id: "work-01", structure: "sceneMeal", image: "下班时段门头或两三人桌面", lines: ["万博附近下班不知道吃什么，来吃顿热烤肉就行。", "几个人点拼盘，再加一份{product}，边烤边聊。"] },
               { id: "work-02", structure: "sceneMeal", image: "烤盘热气加桌面", lines: ["忙了一天，晚上吃点现烤的肉会舒服很多。", "下班顺路来，按人数帮你搭一桌。", "{audience}"] },
               { id: "work-03", structure: "gathering", image: "朋友聚餐桌面", lines: ["朋友临时约饭，烤肉比想半天更省事。", "到店说几个人、想吃什么口味，店员帮你配。"] },
-              { id: "work-04", structure: "order", image: "拼盘加小食桌面", lines: ["晚饭前刷到这条，可以约个下班局。", "{product}配拼盘，热热乎乎吃一顿。"] },
+              { id: "work-04", structure: "order", image: "拼盘加小食桌面", lines: ["晚饭前刷到这条，可以约个下班局。", "{product}上桌，热热乎乎吃一顿。"] },
               { id: "work-05", structure: "daily", image: "店内桌面或烤盘近景", lines: ["如果今天不想做饭，也不想纠结外卖，来店里坐下烤一会儿。", "吃肉、聊天都省心。", "{extra}"] },
               { id: "work-06", structure: "sceneMeal", image: "万博附近门头", lines: ["附近上班的朋友，下班路过万博可以顺路来吃顿热的。", "不会点就按人数帮你搭。"] },
               { id: "work-07", structure: "order", image: "两三人小桌", lines: ["两三个人的小局不用复杂。", "先点{product}，再加几样爱吃的小食，边烤边聊。"] },
@@ -1695,15 +1878,37 @@
         return `${pick(["🥩", "🔥", "🍖", "📍"])} `;
       }
 
-      function normalizeExtra() {
-        let raw = extraInput.value.trim().replace(/\s+/g, " ");
+      function normalizeBriefValue(input, maxLength = 28) {
+        let raw = input.value.trim().replace(/\s+/g, " ");
         if (!raw) return "";
         contentV22.extraReplacements.forEach(([from, to]) => {
           raw = raw.replaceAll(from, to);
         });
-        raw = raw.replace(/[。！？!?,，、]+$/g, "").slice(0, 28);
+        raw = raw.replace(/[。！？!?,，、]+$/g, "").slice(0, maxLength);
         if (!raw || contentV22.badPhrases.some((phrase) => raw.includes(phrase))) return "";
-        return `今天补充：${raw}。`;
+        return raw;
+      }
+
+      function getDailyBrief() {
+        const fact = normalizeBriefValue(todayFactInput);
+        const reminder = normalizeBriefValue(todayReminderInput);
+        const risk = normalizeBriefValue(todayRiskInput);
+        return {
+          fact,
+          reminder,
+          risk,
+          conservative: Boolean(risk) || safeBenefitToggle.checked,
+        };
+      }
+
+      function normalizeExtra() {
+        const brief = getDailyBrief();
+        const lines = [];
+        if (brief.fact) lines.push(`今天补充：${brief.fact}。`);
+        if (brief.reminder) lines.push(`今天提醒：${brief.reminder}。`);
+        if (!lines.length) return "";
+        if (state.rewrite === "short") return pick(lines);
+        return Math.random() < 0.72 ? pick(lines) : lines.join("");
       }
 
       function chooseProductKey(template) {
@@ -1730,6 +1935,9 @@
       }
 
       function getActionLine() {
+        const brief = getDailyBrief();
+        const needsConservativeAction = brief.risk || /活动|福利|会员|券|库存|营业|时间/.test(`${brief.fact}${brief.reminder}`);
+        if (brief.conservative && needsConservativeAction) return "具体以当天门店口径为准，到店问店员。";
         if (state.intent === "benefit") return pick(contentV22.safeActions.benefit);
         if (state.intent === "oldCustomer") return pick(contentV22.safeActions.oldCustomer);
         if (state.rewrite === "short") return pick(["到店问店员就行。", "不会点按人数帮你搭。", "路过万博可以顺路来吃顿热的。"]);
@@ -1764,16 +1972,23 @@
           .filter(Boolean)
           .filter((line, index, arr) => arr.indexOf(line) === index);
 
-        const removeLine = (predicate) => {
-          const index = next.findIndex(predicate);
+        const hasExtraLine = Boolean(context.extraLine);
+        if (hasExtraLine && !next.includes(context.extraLine)) {
+          next.splice(Math.max(1, next.length - 1), 0, context.extraLine);
+        }
+
+        const removeLine = (predicate, allowExtra = false) => {
+          const index = next.findIndex((line) => (allowExtra || line !== context.extraLine) && predicate(line));
           if (index >= 0) next.splice(index, 1);
           return index >= 0;
         };
 
         while (textLength(next.join("")) > maximum && next.length > 2) {
-          if (removeLine((line) => line === context.extraLine)) continue;
           if (removeLine((line) => line === context.audienceLine)) continue;
           if (removeLine((line) => line === context.timeLine)) continue;
+          if (removeLine((line) => line === context.actionLine)) continue;
+          if (removeLine((line) => line !== context.extraLine && next.indexOf(line) > 0)) continue;
+          if (hasExtraLine && removeLine((line) => line === context.extraLine, true)) continue;
           next.splice(Math.max(1, next.length - 2), 1);
         }
 
@@ -1817,22 +2032,70 @@
         };
       }
 
-      function qualityCheck(result) {
+      function getTextParts(text) {
+        const lines = text.split("\n").filter(Boolean);
+        return {
+          first: lines[0] || "",
+          last: lines[lines.length - 1] || "",
+          compact: text.replace(/\s/g, ""),
+        };
+      }
+
+      function similarityScore(firstText, secondText) {
+        const first = new Set(firstText.replace(/[，。！？、\s]/g, "").split(""));
+        const second = new Set(secondText.replace(/[，。！？、\s]/g, "").split(""));
+        const shared = [...first].filter((item) => second.has(item)).length;
+        return shared / Math.max(1, Math.min(first.size, second.size));
+      }
+
+      function hasRepeatedPhrase(text) {
+        const pieces = text
+          .replace(/[🥩🔥🍖📍✨🙌]/g, "")
+          .split(/[，。！？、：:\n]/)
+          .map((item) => item.trim())
+          .filter((item) => item.length >= 6);
+
+        return pieces.some((piece, index) =>
+          pieces.some((other, otherIndex) =>
+            index !== otherIndex &&
+            (piece.includes(other) || other.includes(piece))
+          )
+        );
+      }
+
+      function isTooSimilarToBatch(result, batch) {
+        const parts = getTextParts(result.text);
+        return batch.some((item) => {
+          const other = getTextParts(item.text);
+          if (result.templateId === item.templateId) return true;
+          if (parts.first.slice(0, 8) && parts.first.slice(0, 8) === other.first.slice(0, 8)) return true;
+          if (parts.last && parts.last === other.last) return true;
+          if (result.product === item.product) return true;
+          return similarityScore(parts.compact, other.compact) > 0.68;
+        });
+      }
+
+      function qualityCheck(result, batch = []) {
         const text = result.text;
         const length = textLength(text);
         const maximum = state.rewrite === "short" ? 86 : 110;
         const minimum = state.rewrite === "short" ? 38 : 50;
         const allBadWords = data.bannedWords.concat(contentV22.badPhrases);
+        const brief = getDailyBrief();
         const compact = text.replace(/\s/g, "");
 
         if (!text || /undefined|null|\{|\}/.test(text)) return { pass: false, reason: "empty-slot" };
         if (length > maximum || length < minimum) return { pass: false, reason: "length" };
         if (allBadWords.some((word) => word && text.includes(word))) return { pass: false, reason: "bad-word" };
+        if (/发朋友圈|文案|配图|今天适合发|拍一张|拍三张|拍近景|发一张|照片会|先发一条|发出去/.test(text)) return { pass: false, reason: "meta-copy" };
         if (/23点|营业到|全天供应|库存|剩余|抢购/.test(text)) return { pass: false, reason: "strong-promise" };
+        if (brief.risk && /一定|保证|都有|随时|马上|抢|剩/.test(text)) return { pass: false, reason: "risky-promise" };
         if (state.intent !== "benefit" && /69抵100|平台券|团购券|代金券/.test(text)) return { pass: false, reason: "benefit-conflict" };
         if (!["benefit", "oldCustomer"].includes(state.intent) && /会员权益|九田家/.test(text)) return { pass: false, reason: "member-conflict" };
         if (state.intent === "newProduct" && /权益|会员|九田家|老会员/.test(text)) return { pass: false, reason: "new-product-conflict" };
         if (new Set(text.split("\n")).size !== text.split("\n").length) return { pass: false, reason: "duplicate-line" };
+        if (hasRepeatedPhrase(text)) return { pass: false, reason: "duplicate-phrase" };
+        if (isTooSimilarToBatch(result, batch)) return { pass: false, reason: "batch-similar" };
 
         let score = Math.random();
         if (compact === lastSignature) score += 5;
@@ -1855,12 +2118,13 @@
         return { ...fallback, text: cleanText(safeText) };
       }
 
-      function buildMoment() {
+      function buildMoment(rewrite = "daily", batch = []) {
+        state.rewrite = rewrite;
         const candidates = [];
 
-        for (let index = 0; index < 48; index += 1) {
+        for (let index = 0; index < 72; index += 1) {
           const candidate = buildCandidate();
-          const check = qualityCheck(candidate);
+          const check = qualityCheck(candidate, batch);
           if (check.pass) candidates.push({ ...candidate, score: check.score });
         }
 
@@ -1868,6 +2132,16 @@
         lastSignature = selected.text.replace(/\s/g, "");
         lastTemplateKey = selected.templateId;
         return selected;
+      }
+
+      function buildBatch() {
+        const batch = [];
+        batchVariants.forEach((variant) => {
+          const result = buildMoment(variant.key, batch);
+          batch.push({ ...result, variant });
+        });
+        currentBatch = batch;
+        return batch;
       }
 
       function buildImageSuggestion(result) {
@@ -1889,21 +2163,52 @@
       function buildQualityTip(result) {
         if (result.structure === "benefit") return "发前看一眼：券、活动、会员权益按当天门店口径。";
         if (result.structure === "oldReturn") return "发前看一眼：老会员权益别写死，到店按当天口径说明。";
+        if (getDailyBrief().risk) return "发前看一眼：你填了“不能写死”，这条已按保守口径生成。";
         return pick(contentV22.qualityTips);
       }
 
-      function updateOutput(result) {
-        currentMomentText = result.text;
-        output.textContent = result.text;
-        imageSuggestion.textContent = buildImageSuggestion(result);
-        qualityTip.textContent = buildQualityTip(result);
-        charCount.textContent = `${textLength(result.text)}字`;
-        resultMeta.textContent = `${data.intent[state.intent].label} · ${data.structureLabels[result.structure] || "门店日常"}`;
+      function escapeHtml(text) {
+        return text
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;");
       }
 
-      function generateMoment(rewrite = "normal") {
-        state.rewrite = rewrite;
-        updateOutput(buildMoment());
+      function renderCandidate(result, index) {
+        const structureLabel = data.structureLabels[result.structure] || "门店日常";
+        return `
+          <article class="candidate-card">
+            <div class="candidate-head">
+              <div class="candidate-title">
+                <strong>${escapeHtml(result.variant.label)}</strong>
+                <small>${escapeHtml(result.variant.desc)} · ${escapeHtml(data.intent[state.intent].label)} · ${escapeHtml(structureLabel)}</small>
+              </div>
+              <span class="candidate-count">${textLength(result.text)}字</span>
+            </div>
+            <div class="moment-user">
+              <div class="avatar" aria-hidden="true">朴</div>
+              <div class="moment-name">
+                <strong>朴牛牛万博店</strong>
+                <small>${escapeHtml(result.product)} · 门店实拍</small>
+              </div>
+            </div>
+            <div class="moment-text candidate-text" data-index="${index}" tabindex="0">${escapeHtml(result.text)}</div>
+            <div class="image-tip">${escapeHtml(buildImageSuggestion(result))}</div>
+            <div class="quality-tip">${escapeHtml(buildQualityTip(result))}</div>
+            <button class="copy-button" type="button" data-copy-index="${index}">复制这条</button>
+          </article>
+        `;
+      }
+
+      function updateOutput(batch) {
+        candidateList.innerHTML = batch.map(renderCandidate).join("");
+        batchCount.textContent = `${batch.length}条可选`;
+      }
+
+      function generateBatchOutput() {
+        updateOutput(buildBatch());
+        saveLocalState();
       }
 
       function showToast(message) {
@@ -1913,27 +2218,38 @@
         showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
       }
 
-      function selectOutputForManualCopy() {
+      function selectCandidateForManualCopy(index) {
+        const textNode = candidateList.querySelector(`[data-index="${index}"]`);
+        if (!textNode) return;
         const range = document.createRange();
-        range.selectNodeContents(output);
+        range.selectNodeContents(textNode);
         const selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
-        output.focus();
+        textNode.focus();
       }
 
-      async function copyMoment() {
-        if (!currentMomentText.trim()) {
-          generateMoment();
-        }
+      function markCopied(index) {
+        candidateList.querySelectorAll("[data-copy-index]").forEach((button) => {
+          const copied = button.dataset.copyIndex === String(index);
+          button.textContent = copied ? "已复制" : "复制这条";
+          button.classList.toggle("copied", copied);
+        });
+      }
 
+      async function copyCandidate(index) {
+        if (!currentBatch.length) generateBatchOutput();
+        const result = currentBatch[index];
+        if (!result) return;
         try {
-          await navigator.clipboard.writeText(currentMomentText);
+          await navigator.clipboard.writeText(result.text);
+          markCopied(index);
           showToast("已复制，可以去朋友圈粘贴");
         } catch (error) {
-          selectOutputForManualCopy();
+          selectCandidateForManualCopy(index);
           try {
             const copied = document.execCommand && document.execCommand("copy");
+            if (copied) markCopied(index);
             showToast(copied ? "已复制，可以去朋友圈粘贴" : "已选中文案，请手动复制");
           } catch (fallbackError) {
             showToast("已选中文案，请手动复制");
@@ -1947,6 +2263,62 @@
         });
       }
 
+      function syncPressedFromState() {
+        groups.forEach((group) => {
+          const groupName = group.dataset.group;
+          const button = group.querySelector(`[data-value="${state[groupName]}"]`);
+          if (button) setPressed(group, button);
+        });
+      }
+
+      function saveLocalState() {
+        try {
+          const payload = {
+            state: {
+              intent: state.intent,
+              target: state.target,
+              time: state.time,
+              tone: state.tone,
+              material: state.material,
+            },
+            brief: {
+              fact: todayFactInput.value,
+              reminder: todayReminderInput.value,
+              risk: todayRiskInput.value,
+            },
+            toggles: {
+              emoji: emojiToggle.checked,
+              safeBenefit: safeBenefitToggle.checked,
+            },
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch (error) {
+          // localStorage may be blocked in some in-app browsers; generation still works.
+        }
+      }
+
+      function restoreLocalState() {
+        try {
+          const payload = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+          if (!payload) return;
+          ["intent", "target", "time", "tone", "material"].forEach((key) => {
+            if (payload.state?.[key] && state[key] !== undefined) state[key] = payload.state[key];
+          });
+          todayFactInput.value = payload.brief?.fact || "";
+          todayReminderInput.value = payload.brief?.reminder || "";
+          todayRiskInput.value = payload.brief?.risk || "";
+          if (typeof payload.toggles?.emoji === "boolean") emojiToggle.checked = payload.toggles.emoji;
+          if (typeof payload.toggles?.safeBenefit === "boolean") safeBenefitToggle.checked = payload.toggles.safeBenefit;
+          syncPressedFromState();
+        } catch (error) {
+          try {
+            localStorage.removeItem(STORAGE_KEY);
+          } catch (storageError) {
+            // Ignore blocked storage; the page should still generate copy.
+          }
+        }
+      }
+
       groups.forEach((group) => {
         const groupName = group.dataset.group;
         group.addEventListener("click", (event) => {
@@ -1954,18 +2326,26 @@
           if (!button) return;
           state[groupName] = button.dataset.value;
           setPressed(group, button);
+          saveLocalState();
         });
       });
 
-      generateButton.addEventListener("click", () => generateMoment("normal"));
-      regenerateButton.addEventListener("click", () => generateMoment(state.rewrite));
-      copyButton.addEventListener("click", copyMoment);
-
-      rewriteButtons.forEach((button) => {
-        button.addEventListener("click", () => generateMoment(button.dataset.rewrite));
+      [todayFactInput, todayReminderInput, todayRiskInput, emojiToggle, safeBenefitToggle].forEach((input) => {
+        input.addEventListener("input", saveLocalState);
+        input.addEventListener("change", saveLocalState);
       });
 
-      generateMoment();
+      candidateList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-copy-index]");
+        if (!button) return;
+        copyCandidate(Number(button.dataset.copyIndex));
+      });
+
+      generateButton.addEventListener("click", generateBatchOutput);
+      regenerateButton.addEventListener("click", generateBatchOutput);
+
+      restoreLocalState();
+      generateBatchOutput();
     </script>
   </body>
 </html>
