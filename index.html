@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <title>朴牛牛朋友圈生成器</title>
+    <style>
+      :root {
+        --bg: #f4f6f5;
+        --panel: #ffffff;
+        --panel-soft: #f8faf9;
+        --text: #1f2a24;
+        --muted: #66736c;
+        --subtle: #8c9892;
+        --line: #dfe6e2;
+        --line-strong: #c8d5ce;
+        --wechat: #07c160;
+        --wechat-dark: #04954a;
+        --warm: #f4aa3c;
+        --danger: #c84732;
+        --shadow: 0 14px 40px rgba(31, 42, 36, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-width: 320px;
+        background: var(--bg);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          linear-gradient(180deg, rgba(7, 193, 96, 0.12), rgba(244, 246, 245, 0) 280px),
+          var(--bg);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
+          "Microsoft YaHei", Arial, sans-serif;
+        letter-spacing: 0;
+      }
+
+      button,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .app {
+        width: min(100%, 780px);
+        margin: 0 auto;
+        padding: 18px 14px calc(96px + env(safe-area-inset-bottom));
+      }
+
+      .hero {
+        padding: 10px 2px 14px;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .version {
+        flex: 0 0 auto;
+        padding: 4px 8px;
+        border: 1px solid rgba(7, 193, 96, 0.25);
+        border-radius: 8px;
+        color: var(--wechat-dark);
+        background: rgba(7, 193, 96, 0.08);
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      h1 {
+        margin: 10px 0 8px;
+        font-size: 30px;
+        line-height: 1.14;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 34em;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.62;
+      }
+
+      .panel {
+        margin: 12px 0;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow);
+      }
+
+      .panel + .panel {
+        margin-top: 14px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.3;
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--subtle);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .field {
+        margin-top: 18px;
+      }
+
+      .field:first-child {
+        margin-top: 0;
+      }
+
+      .label-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      label,
+      .field-label {
+        display: block;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .chip-group {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .chip {
+        min-height: 42px;
+        padding: 9px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--text);
+        background: var(--panel-soft);
+        text-align: center;
+        font-size: 14px;
+        font-weight: 650;
+        line-height: 1.25;
+        cursor: pointer;
+      }
+
+      .chip[aria-pressed="true"] {
+        border-color: var(--wechat);
+        color: var(--wechat-dark);
+        background: rgba(7, 193, 96, 0.1);
+        box-shadow: inset 0 0 0 1px rgba(7, 193, 96, 0.24);
+      }
+
+      .chip:focus-visible,
+      .secondary-button:focus-visible,
+      .primary-button:focus-visible,
+      textarea:focus-visible {
+        outline: 3px solid rgba(7, 193, 96, 0.25);
+        outline-offset: 2px;
+      }
+
+      .textarea-wrap {
+        position: relative;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 84px;
+        resize: vertical;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--text);
+        background: var(--panel-soft);
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      textarea::placeholder {
+        color: #9ba7a1;
+      }
+
+      .switches {
+        display: grid;
+        gap: 10px;
+      }
+
+      .switch-row {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel-soft);
+      }
+
+      .switch-row input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--wechat);
+        margin: 1px 0 0;
+      }
+
+      .switch-row span {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .switch-row small {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .result-panel {
+        border-color: rgba(7, 193, 96, 0.35);
+      }
+
+      .result-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .result-title {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .count {
+        flex: 0 0 auto;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .moment-output {
+        width: 100%;
+        min-height: 176px;
+        border-color: var(--line-strong);
+        background: #fff;
+        white-space: pre-wrap;
+      }
+
+      .suggestion {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #f0dfbf;
+        background: #fffaf1;
+      }
+
+      .suggestion strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #8a5b13;
+        font-size: 13px;
+      }
+
+      .suggestion p {
+        margin: 0;
+        color: #5f4b2b;
+        font-size: 14px;
+        line-height: 1.58;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .secondary-button,
+      .primary-button {
+        min-height: 46px;
+        border: 0;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .secondary-button {
+        color: var(--wechat-dark);
+        background: rgba(7, 193, 96, 0.1);
+      }
+
+      .primary-button {
+        color: #fff;
+        background: var(--wechat);
+        box-shadow: 0 10px 24px rgba(7, 193, 96, 0.25);
+      }
+
+      .primary-button:active,
+      .secondary-button:active,
+      .chip:active {
+        transform: translateY(1px);
+      }
+
+      .sticky-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        background: rgba(244, 246, 245, 0.88);
+        border-top: 1px solid rgba(223, 230, 226, 0.9);
+        backdrop-filter: blur(18px);
+      }
+
+      .sticky-inner {
+        width: min(100%, 780px);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(78px + env(safe-area-inset-bottom));
+        z-index: 30;
+        transform: translateX(-50%) translateY(12px);
+        max-width: calc(100vw - 32px);
+        padding: 9px 12px;
+        border-radius: 8px;
+        color: #fff;
+        background: rgba(31, 42, 36, 0.88);
+        font-size: 13px;
+        line-height: 1.4;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .note {
+        margin: 12px 2px 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      @media (min-width: 620px) {
+        .app {
+          padding-top: 28px;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+
+        .panel {
+          padding: 20px;
+        }
+
+        .chip-group {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .switches {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sticky-inner {
+          grid-template-columns: 220px;
+          justify-content: end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="eyebrow">
+          <span>朴牛牛黑牛烤肉 · 门店员工版</span>
+          <span class="version">本地 v1</span>
+        </div>
+        <h1>朋友圈生成器</h1>
+        <p>
+          选几个条件，生成一条短一点、像真人发的朋友圈。可以直接复制，也会给一条配图建议。
+        </p>
+      </header>
+
+      <section class="panel" aria-labelledby="quick-form-title">
+        <div class="section-title">
+          <h2 id="quick-form-title">今天这条朋友圈怎么发</h2>
+          <p class="hint">不填补充也能生成</p>
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <span class="field-label">发送时段</span>
+          </div>
+          <div class="chip-group" data-group="time">
+            <button class="chip" type="button" data-value="morning" aria-pressed="true">早上10点</button>
+            <button class="chip" type="button" data-value="lunch" aria-pressed="false">午餐前</button>
+            <button class="chip" type="button" data-value="afternoon" aria-pressed="false">下午</button>
+            <button class="chip" type="button" data-value="dinner" aria-pressed="false">晚餐前</button>
+            <button class="chip" type="button" data-value="lateNight" aria-pressed="false">夜宵前</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <span class="field-label">今天想实现什么目的</span>
+          </div>
+          <div class="chip-group" data-group="purpose">
+            <button class="chip" type="button" data-value="newProduct" aria-pressed="true">推新品</button>
+            <button class="chip" type="button" data-value="signature" aria-pressed="false">推招牌产品</button>
+            <button class="chip" type="button" data-value="scene" aria-pressed="false">打场景</button>
+            <button class="chip" type="button" data-value="oldCustomer" aria-pressed="false">老客回流</button>
+            <button class="chip" type="button" data-value="benefit" aria-pressed="false">福利提醒</button>
+            <button class="chip" type="button" data-value="atmosphere" aria-pressed="false">现场氛围</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <span class="field-label">主要发给谁看</span>
+          </div>
+          <div class="chip-group" data-group="target">
+            <button class="chip" type="button" data-value="oldMembers" aria-pressed="true">九田家老会员</button>
+            <button class="chip" type="button" data-value="workers" aria-pressed="false">万博附近上班族</button>
+            <button class="chip" type="button" data-value="friends" aria-pressed="false">朋友聚餐</button>
+            <button class="chip" type="button" data-value="family" aria-pressed="false">家庭聚餐</button>
+            <button class="chip" type="button" data-value="afterWork" aria-pressed="false">下班吃肉</button>
+            <button class="chip" type="button" data-value="weekend" aria-pressed="false">周末客</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <span class="field-label">今天主推什么</span>
+          </div>
+          <div class="chip-group" data-group="material">
+            <button class="chip" type="button" data-value="blackBeef" aria-pressed="true">黑牛必点</button>
+            <button class="chip" type="button" data-value="classicPlatter" aria-pressed="false">经典三拼/五拼</button>
+            <button class="chip" type="button" data-value="newDishes" aria-pressed="false">新品</button>
+            <button class="chip" type="button" data-value="beefRibGift" aria-pressed="false">55元牛仔骨</button>
+            <button class="chip" type="button" data-value="voucher69" aria-pressed="false">69抵100</button>
+            <button class="chip" type="button" data-value="memberRights" aria-pressed="false">会员权益</button>
+            <button class="chip" type="button" data-value="lateMeal" aria-pressed="false">宵夜档</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <span class="field-label">语气</span>
+          </div>
+          <div class="chip-group" data-group="tone">
+            <button class="chip" type="button" data-value="familiar" aria-pressed="true">熟人提醒</button>
+            <button class="chip" type="button" data-value="staffDaily" aria-pressed="false">店员日常</button>
+            <button class="chip" type="button" data-value="softBenefit" aria-pressed="false">轻福利</button>
+            <button class="chip" type="button" data-value="realScene" aria-pressed="false">真实现场</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="extra">简单补充</label>
+          <div class="textarea-wrap">
+            <textarea
+              id="extra"
+              maxlength="80"
+              placeholder="例如：今天有新品 / 有顾客返图 / 晚上直播 / 牛肉状态不错"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="field switches" aria-label="生成设置">
+          <label class="switch-row">
+            <input id="emojiToggle" type="checkbox" checked />
+            <span>
+              带少量表情
+              <small>只加一点点，不做花哨广告。</small>
+            </span>
+          </label>
+          <label class="switch-row">
+            <input id="safeBenefitToggle" type="checkbox" checked />
+            <span>
+              活动口径保守
+              <small>福利类内容默认写“到店问当天口径”。</small>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel result-panel" aria-labelledby="result-title">
+        <div class="result-head">
+          <h2 class="result-title" id="result-title">生成结果</h2>
+          <span class="count" id="charCount">0字</span>
+        </div>
+        <textarea class="moment-output" id="momentOutput" readonly></textarea>
+        <div class="suggestion" aria-live="polite">
+          <strong>配图建议</strong>
+          <p id="imageSuggestion">先点“生成朋友圈”，这里会给一条配图建议。</p>
+        </div>
+        <div class="actions">
+          <button class="secondary-button" type="button" id="copyButton">复制文案</button>
+          <button class="secondary-button" type="button" id="regenerateButton">换一条</button>
+        </div>
+        <p class="note">
+          提醒：如果当天活动、库存、营业时间没确认，发之前先按门店当天口径删改一句。
+        </p>
+      </section>
+    </main>
+
+    <div class="sticky-bar">
+      <div class="sticky-inner">
+        <button class="primary-button" type="button" id="generateButton">生成朋友圈</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const data = {
+        time: {
+          morning: {
+            label: "早上10点",
+            lines: ["早上先提醒一下", "上午这条先轻轻发一下", "今天早上先给老朋友们留个小提醒"],
+          },
+          lunch: {
+            label: "午餐前",
+            lines: ["午饭前给大家一个吃肉选择", "中午不知道吃什么，可以看看这条", "午餐前发个小提醒"],
+          },
+          afternoon: {
+            label: "下午",
+            lines: ["下午不忙，发一条店里日常", "下午给大家同步一下今天店里的状态", "下午刷到这条的朋友可以先留着"],
+          },
+          dinner: {
+            label: "晚餐前",
+            lines: ["晚饭前提醒一下", "今晚想吃点热乎烤肉的，可以看看", "晚餐不知道约哪儿，可以先收藏这条"],
+          },
+          lateNight: {
+            label: "夜宵前",
+            lines: ["晚上还想吃口热的，可以问问我们", "9点后想吃烤肉的朋友，可以先留意一下", "夜里想吃点肉，这条可以先留着"],
+          },
+        },
+        purpose: {
+          newProduct: {
+            label: "推新品",
+            lines: [
+              "今天想让大家试试店里的新选择，不夸张，是真的适合尝鲜。",
+              "这两天店里有些新口味，先给熟客朋友们看看。",
+              "新品先慢慢推，口味稳定、好拍，也适合第一次来点一份。",
+            ],
+            endings: ["想尝新的到店问我们就行。", "先不说太满，来店里试过就知道。", "路过万博附近，可以进来看看今天有什么新选择。"],
+            images: ["新品上桌近景 + 店员手拿菜单", "新品烤制画面 + 桌面全景", "新品和原有经典款放在一桌对比"],
+          },
+          signature: {
+            label: "推招牌产品",
+            lines: [
+              "第一次来朴牛牛，不用把菜单翻半天，先点稳的就行。",
+              "今天主推一点店里更适合新客的必点款。",
+              "想吃黑牛烤肉，先从这几个好懂、好点的产品开始。",
+            ],
+            endings: ["不会点的到店问我们，少踩雷。", "几个人来都能帮你搭一桌。", "想吃得稳一点，就从必点款开始。"],
+            images: ["黑牛拼盘近景 + 烤盘冒油画面", "三拼/五拼完整桌面图", "肉品纹理近景 + 烤好后夹起一片"],
+          },
+          scene: {
+            label: "打场景",
+            lines: [
+              "万博附近下班，不想再纠结吃什么，可以来吃口热乎的。",
+              "朋友小聚、家庭吃饭，烤肉这种场景还是比较稳。",
+              "今天这条不硬推活动，就是给附近想约饭的朋友一个选择。",
+            ],
+            endings: ["人多点拼盘，人少点双人餐，比较省心。", "适合下班、周末、朋友临时约一顿。", "想吃肉的时候，记得朴牛牛还在万博这边。"],
+            images: ["门头/外立面 + 一桌人吃肉", "下班时段门店外景 + 热烤肉近景", "家庭或朋友聚餐桌面图"],
+          },
+          oldCustomer: {
+            label: "老客回流",
+            lines: [
+              "原九田家万博店，现在升级成朴牛牛黑牛烤肉啦。",
+              "老朋友们可以回来看看，店里环境、菜品和服务都做了升级。",
+              "熟悉的位置还在，只是现在换成了新的朴牛牛。",
+            ],
+            endings: ["九田家保定区域会员权益，到店可以问我们怎么用。", "老朋友回来吃肉，我们会帮你把权益说明白。", "欢迎回来吃肉，这句话是真心的。"],
+            images: ["门头升级图 + 老客到店桌面图", "店员接待画面 + 烤肉近景", "老会员回店礼物料或桌面图"],
+          },
+          benefit: {
+            label: "福利提醒",
+            lines: [
+              "今天这条主要是提醒一下能用的福利，不想大家来了才发现错过。",
+              "想吃烤肉又想划算一点，可以先看看今天门店和平台有什么能用。",
+              "福利不用写得太复杂，到店能不能用、怎么用，我们会当面说清楚。",
+            ],
+            endings: ["具体以门店和平台当天展示为准。", "路过可以进店问一句，能省的我们会帮你看。", "先留着，来吃的时候再问我们就行。"],
+            images: ["团购/福利截图 + 门店桌面图", "店员展示福利牌 + 烤肉近景", "门口物料 + 菜品上桌图"],
+          },
+          atmosphere: {
+            label: "现场氛围",
+            lines: [
+              "今天店里状态还不错，随手发个现场。",
+              "烤盘热起来的时候，店里就有烟火气了。",
+              "朋友圈还是发点真实的，今天店里的肉和现场都挺适合拍。",
+            ],
+            endings: ["看到这条想吃肉，直接过来就行。", "图片尽量发实拍，大家看着也更放心。", "不写太多，想吃就来。"],
+            images: ["真实顾客桌面图 + 烤肉冒油近景", "店内环境 + 店员服务画面", "满桌菜品 + 门店现场氛围"],
+          },
+        },
+        target: {
+          oldMembers: [
+            "老九田家万博店的朋友，会员权益这边会继续做好承接。",
+            "老会员回来不用担心，我们会按门店口径帮你看权益。",
+            "熟客朋友路过万博，可以回来看看这次升级。",
+          ],
+          workers: [
+            "万博附近上班的朋友，下班不用纠结吃什么。",
+            "中午或晚上路过万博，想吃肉可以把这条留一下。",
+            "附近上班的朋友，临时约饭也比较方便。",
+          ],
+          friends: [
+            "朋友聚餐不用点太复杂，拼盘和小食搭一桌就够舒服。",
+            "两三个人约饭，烤肉更容易热起来。",
+            "想找个能边吃边聊的地方，可以考虑朴牛牛。",
+          ],
+          family: [
+            "带家人吃饭，重点还是环境舒服、点餐省心。",
+            "家庭聚餐可以点稳一点的拼盘，再搭配主食和小食。",
+            "周末带家人来吃一顿热乎烤肉，也挺合适。",
+          ],
+          afterWork: [
+            "下班后想放松一下，烤肉比冷冰冰点外卖更有感觉。",
+            "忙了一天，晚上吃点热乎的肉，状态会好很多。",
+            "下班想吃肉，别想太复杂，来一桌现烤的就行。",
+          ],
+          weekend: [
+            "周末人多一点，建议早点安排，别临时纠结。",
+            "周末适合带朋友或家人来，点一桌慢慢吃。",
+            "周末想吃烤肉，可以提前把这条留着。",
+          ],
+        },
+        material: {
+          blackBeef: {
+            lines: [
+              "黑牛必点这类，适合第一次来先试，不用把菜单翻半天。",
+              "想吃肉香更明显的，可以先从黑牛类点起。",
+              "今天主推黑牛必点款，好懂、好拍，也比较稳。",
+            ],
+            images: ["黑牛纹理近景", "烤盘上黑牛翻面画面", "黑牛必点款完整上桌图"],
+          },
+          classicPlatter: {
+            lines: [
+              "经典三拼/五拼更适合几个人一起点，桌面也好看。",
+              "不知道怎么点，拼盘是最省心的选择。",
+              "人多的时候点拼盘，种类够，也比较好分。",
+            ],
+            images: ["三拼/五拼俯拍", "拼盘上桌 + 烤制近景", "多人聚餐桌面图"],
+          },
+          newDishes: {
+            lines: [
+              "新品先小范围推，口味稳了我们再多拍一点。",
+              "今天可以试试新口味，别一次点太多，搭配经典款更稳。",
+              "新菜适合尝鲜，也适合发朋友圈拍一张。",
+            ],
+            images: ["新品单品近景", "新品和经典款同桌对比", "店员推荐新品画面"],
+          },
+          beefRibGift: {
+            lines: [
+              "老会员回店礼这类福利，以门店当天口径为准，到店问我们就行。",
+              "牛仔骨福利如果当天能用，我们会帮你说明白。",
+              "老朋友回来吃肉，可以先问问今天有没有回店礼。",
+            ],
+            confidentLines: [
+              "老会员到店可以问问55元牛仔骨回店礼。",
+              "截图或凭到店口径，老朋友可以问问55元牛仔骨福利。",
+              "这次给老朋友准备了55元牛仔骨回店礼，到店记得问我们。",
+            ],
+            images: ["牛仔骨上桌图", "回店礼物料 + 烤肉近景", "老客到店桌面图"],
+          },
+          voucher69: {
+            lines: [
+              "69抵100这类福利，以平台和门店当天展示为准。",
+              "想划算一点，可以先看看平台当天有没有代金券。",
+              "能用的团购券和代金券，到店我们会帮你看清楚。",
+            ],
+            confidentLines: [
+              "69抵100可以先囤一张，来吃的时候更划算。",
+              "想划算一点，可以先看69抵100这张券。",
+              "69抵100适合先买后用，到店再搭配点餐。",
+            ],
+            images: ["团购券截图 + 菜品桌面", "平台页面截图 + 门店门头", "代金券说明牌 + 烤肉近景"],
+          },
+          memberRights: {
+            lines: [
+              "九田家保定区域会员权益，到店可以直接问我们怎么用。",
+              "会员权益这块不用担心，进店我们会按当天口径帮你看。",
+              "老会员回来，先问会员权益，再慢慢点餐。",
+            ],
+            images: ["会员权益提示物料", "收银/接待说明画面", "老会员到店桌面图"],
+          },
+          lateMeal: {
+            lines: [
+              "9点后想吃烤肉，也可以问问当天有没有夜宵档安排。",
+              "晚上想吃口热的，夜里这顿可以安排轻一点。",
+              "夜宵不用太复杂，热烤肉配点小食就很舒服。",
+            ],
+            images: ["夜间门头", "晚间烤肉近景", "夜宵轻套餐桌面"],
+          },
+        },
+        tone: {
+          familiar: {
+            label: "熟人提醒",
+            openers: ["老朋友们，提醒一下～", "熟客朋友看到这条，可以先留一下。", "今天这条就当熟人提醒。"],
+            closers: ["不着急，路过再来。", "有空回来吃肉就行。", "到店问我们，别自己研究半天。"],
+          },
+          staffDaily: {
+            label: "店员日常",
+            openers: ["今天店里正常营业，给大家同步一下。", "店里今天准备好了，发条日常。", "作为店里人，今天想简单说一句。"],
+            closers: ["有不清楚的到店问我们就行。", "不会点也没关系，我们帮你搭。", "来了直接跟店员说需求就行。"],
+          },
+          softBenefit: {
+            label: "轻福利",
+            openers: ["今天这条主要是给想吃肉的朋友留个小提醒。", "福利不复杂，简单说一句。", "想吃得划算一点，可以看看这条。"],
+            closers: ["能用的福利我们会当面帮你看。", "具体以当天门店和平台为准。", "先收藏，来之前问一句就行。"],
+          },
+          realScene: {
+            label: "真实现场",
+            openers: ["今天不写广告，就发点真实现场。", "店里今天状态不错，顺手记录一下。", "朋友圈还是发真实一点，大家看着放心。"],
+            closers: ["照片尽量发实拍，更有感觉。", "想吃就来，不用想太复杂。", "真实到店、真实烤肉，才有烟火气。"],
+          },
+        },
+        emojis: ["🥩", "🔥", "🍖", "📍", "✨", "🙌"],
+        bannedWords: ["保定第一", "全城最火", "必吃天花板", "错过再等一年", "不来后悔", "爆火全网"],
+      };
+
+      const state = {
+        time: "morning",
+        purpose: "newProduct",
+        target: "oldMembers",
+        material: "blackBeef",
+        tone: "familiar",
+      };
+
+      const groups = document.querySelectorAll("[data-group]");
+      const extraInput = document.getElementById("extra");
+      const emojiToggle = document.getElementById("emojiToggle");
+      const safeBenefitToggle = document.getElementById("safeBenefitToggle");
+      const output = document.getElementById("momentOutput");
+      const charCount = document.getElementById("charCount");
+      const imageSuggestion = document.getElementById("imageSuggestion");
+      const toast = document.getElementById("toast");
+      const generateButton = document.getElementById("generateButton");
+      const regenerateButton = document.getElementById("regenerateButton");
+      const copyButton = document.getElementById("copyButton");
+
+      function pick(items) {
+        return items[Math.floor(Math.random() * items.length)];
+      }
+
+      function textLength(text) {
+        return text.replace(/\s/g, "").length;
+      }
+
+      function cleanText(text) {
+        return data.bannedWords.reduce((current, word) => current.replaceAll(word, ""), text);
+      }
+
+      function getMaterialLine(materialKey, safeBenefit) {
+        const material = data.material[materialKey];
+        if (!safeBenefit && material.confidentLines) {
+          return pick(material.confidentLines);
+        }
+        return pick(material.lines);
+      }
+
+      function maybeEmoji(enabled) {
+        if (!enabled) return "";
+        return Math.random() > 0.35 ? `${pick(data.emojis)} ` : "";
+      }
+
+      function buildMoment() {
+        const safeBenefit = safeBenefitToggle.checked;
+        const withEmoji = emojiToggle.checked;
+        const time = data.time[state.time];
+        const purpose = data.purpose[state.purpose];
+        const tone = data.tone[state.tone];
+        const extra = extraInput.value.trim();
+
+        const intro = `${maybeEmoji(withEmoji)}${pick(tone.openers)}`;
+        const timeLine = Math.random() > 0.25 ? pick(time.lines) : "";
+        const purposeLine = pick(purpose.lines);
+        const materialLine = getMaterialLine(state.material, safeBenefit);
+        const targetLine = pick(data.target[state.target]);
+        const extraLine = extra ? `今天补充：${extra}` : "";
+        const closer = Math.random() > 0.45 ? pick(purpose.endings) : pick(tone.closers);
+
+        let lines = [intro, timeLine, purposeLine, materialLine, targetLine, extraLine, closer]
+          .filter(Boolean)
+          .filter((line, index, arr) => arr.indexOf(line) === index);
+
+        while (textLength(lines.join("")) > 122 && lines.length > 4) {
+          const removableIndex = lines.findIndex((line) => line === targetLine || line === timeLine);
+          lines.splice(removableIndex >= 0 ? removableIndex : 2, 1);
+        }
+
+        if (textLength(lines.join("")) < 58) {
+          lines.splice(lines.length - 1, 0, pick(data.target[state.target]));
+        }
+
+        return cleanText(lines.join("\n"));
+      }
+
+      function buildImageSuggestion() {
+        const purposeImages = data.purpose[state.purpose].images;
+        const materialImages = data.material[state.material].images;
+        const backup = ["门头实拍", "烤肉近景", "桌面全景", "员工现场图", "顾客返图"];
+        const first = pick(purposeImages);
+        const second = pick(materialImages);
+        const third = pick(backup);
+        return `建议配图：${first}；再补一张${second}。素材不够时，用${third}也可以，尽量发真实现场。`;
+      }
+
+      function updateOutput(text, suggestion) {
+        output.value = text;
+        imageSuggestion.textContent = suggestion;
+        charCount.textContent = `${textLength(text)}字`;
+      }
+
+      function generateMoment() {
+        const text = buildMoment();
+        updateOutput(text, buildImageSuggestion());
+      }
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+      }
+
+      function selectOutputForManualCopy() {
+        output.removeAttribute("readonly");
+        output.focus();
+        output.select();
+        output.setAttribute("readonly", "readonly");
+      }
+
+      async function copyMoment() {
+        if (!output.value.trim()) {
+          generateMoment();
+        }
+
+        try {
+          await navigator.clipboard.writeText(output.value);
+          showToast("已复制，可以去朋友圈粘贴");
+        } catch (error) {
+          selectOutputForManualCopy();
+          try {
+            const copied = document.execCommand && document.execCommand("copy");
+            showToast(copied ? "已复制，可以去朋友圈粘贴" : "已选中文案，请手动复制");
+          } catch (fallbackError) {
+            showToast("已选中文案，请手动复制");
+          }
+        }
+      }
+
+      groups.forEach((group) => {
+        const groupName = group.dataset.group;
+        group.addEventListener("click", (event) => {
+          const button = event.target.closest(".chip");
+          if (!button) return;
+          state[groupName] = button.dataset.value;
+          group.querySelectorAll(".chip").forEach((chip) => {
+            chip.setAttribute("aria-pressed", chip === button ? "true" : "false");
+          });
+        });
+      });
+
+      generateButton.addEventListener("click", generateMoment);
+      regenerateButton.addEventListener("click", generateMoment);
+      copyButton.addEventListener("click", copyMoment);
+
+      generateMoment();
+    </script>
+  </body>
+</html>
