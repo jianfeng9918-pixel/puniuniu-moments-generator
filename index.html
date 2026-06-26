@@ -409,6 +409,18 @@
         line-height: 1.55;
       }
 
+      .quality-tip {
+        margin-top: 8px;
+        padding: 9px 10px;
+        border: 1px solid rgba(7, 193, 96, 0.18);
+        border-radius: 8px;
+        color: var(--wechat-dark);
+        background: rgba(7, 193, 96, 0.06);
+        font-size: 12px;
+        font-weight: 750;
+        line-height: 1.5;
+      }
+
       .copy-button {
         width: 100%;
         min-height: 58px;
@@ -577,7 +589,7 @@
       <header class="hero">
         <div class="eyebrow">
           <span>朴牛牛黑牛烤肉 · 门店员工版</span>
-          <span class="version">v2</span>
+          <span class="version">v2.1</span>
         </div>
         <h1>朋友圈生成器</h1>
         <p>少选几项，生成一条像店里人自己发的短文案。复制按钮放大了，生成后直接发朋友圈。</p>
@@ -713,6 +725,7 @@
 
           <div class="moment-text" id="momentOutput" tabindex="0" aria-live="polite"></div>
           <div class="image-tip" id="imageSuggestion">配图：先点“生成朋友圈”，这里会给一条建议。</div>
+          <div class="quality-tip" id="qualityTip">检查：像朋友发的、只说一件事、发前核对当天口径。</div>
 
           <button class="copy-button" type="button" id="copyButton">复制这条朋友圈</button>
 
@@ -1103,9 +1116,229 @@
             },
           },
         },
+        intentStructures: {
+          newProduct: ["productSeed", "staffPick", "daily", "serviceAssist", "feedback"],
+          signature: ["productSeed", "order", "staffPick", "serviceAssist", "feedback"],
+          oldCustomer: ["oldReturn", "daily", "feedback", "serviceAssist", "productSeed"],
+          afterWork: ["sceneMeal", "gathering", "serviceAssist", "lateNight", "order"],
+          atmosphere: ["daily", "feedback", "staffPick", "sceneMeal", "serviceAssist"],
+          benefit: ["benefit", "order", "sceneMeal", "serviceAssist", "daily"],
+        },
+        hooks: {
+          location: [
+            "万博附近不知道吃什么的，可以来坐坐。",
+            "就在万博广场旁边，出来走几步就到了。",
+            "逛完万博还没吃饭的，顺路过来就行。",
+            "万博附近上班的朋友，下班不用走远。",
+            "在万博附近约人吃饭，可以约到我们这儿。",
+          ],
+          time: [
+            "中午不知道吃啥，可以吃顿肉。",
+            "下班了，今天吃点热乎的。",
+            "晚上还没想好吃什么，可以先留着这条。",
+            "周末了，适合出来吃顿好的。",
+            "今天降温的话，围着烤盘吃肉挺舒服。",
+          ],
+          pain: [
+            "不知道今天吃什么的时候，烤肉一般不太容易出错。",
+            "每次聚餐都不知道去哪儿，可以选个能边吃边聊的地方。",
+            "不太会烤肉也没关系，到店可以问问助烤。",
+            "第一次来不知道怎么点，来了跟店员说人数就行。",
+            "选餐厅纠结半天，不如先把吃肉这件事定下来。",
+          ],
+          product: [
+            "蜜汁牛肉微甜口，小朋友一般也能接受。",
+            "雪花上脑烤到七八分熟，咬下去是嫩的。",
+            "牡蛎肉这个部位很多人没试过，来了可以点一份。",
+            "果木炭烤出来有淡淡木香，闻着就有食欲。",
+            "有助烤的时候，不用一直自己盯着烤盘。",
+          ],
+          crowd: [
+            "几个朋友好久没聚了，约顿烤肉吧。",
+            "一家人周末出来吃顿好的，比在家做省事。",
+            "同事下班一起来，四五个人一桌刚好。",
+            "两个人来也不少，安安静静吃顿肉。",
+            "带对象吃饭，烤肉氛围会轻松一点。",
+          ],
+        },
+        productDetails: {
+          honeyBeef: {
+            label: "蜜汁牛肉",
+            lines: [
+              "蜜汁牛肉是微甜口，烤完有汁水，第一次来可以先试试。",
+              "今天可以试试蜜汁牛肉，甜口不重，烤出来比较香。",
+              "带小朋友或家人来，蜜汁牛肉这种口味会更好接受。",
+            ],
+            staff: [
+              "店员今天会比较推荐蜜汁牛肉，原因很简单：好入口，也好搭配。",
+              "第一次来不知道点什么，蜜汁牛肉可以先安排一份。",
+            ],
+            image: ["蜜汁牛肉上桌近景", "蜜汁牛肉烤到出汁", "蜜汁牛肉夹起特写"],
+          },
+          snowChuck: {
+            label: "澳洲雪花上脑",
+            lines: [
+              "澳洲雪花上脑看纹路就比较有食欲，烤到七八分熟更嫩。",
+              "想吃嫩一点的，可以问问澳洲雪花上脑，口感比较稳。",
+              "上脑别烤太老，刚好夹起来的时候香气最明显。",
+            ],
+            staff: [
+              "店员自己会把上脑烤到七八分熟，口感更舒服。",
+              "问第一次来怎么点，上脑这类肉品通常比较稳。",
+            ],
+            image: ["澳洲雪花上脑纹理近景", "上脑在烤盘翻面", "上脑烤好夹起图"],
+          },
+          oysterBlade: {
+            label: "安格斯牡蛎肉",
+            lines: [
+              "安格斯牡蛎肉这个部位很多人没试过，来了可以点一份尝尝。",
+              "牡蛎肉烤出来口感更有记忆点，适合想换口味的朋友。",
+              "今天想吃点不一样的，可以试试安格斯牡蛎肉。",
+            ],
+            staff: [
+              "店员会把牡蛎肉推荐给想尝鲜的朋友，吃起来更有新鲜感。",
+              "如果总点熟悉的肉，可以让店员加一份牡蛎肉试试。",
+            ],
+            image: ["安格斯牡蛎肉单品近景", "牡蛎肉烤制画面", "牡蛎肉和拼盘同桌"],
+          },
+          fruitwoodCharcoal: {
+            label: "果木炭",
+            lines: [
+              "果木炭烤出来有一点淡淡木香，和普通电烤的感觉不一样。",
+              "烤盘热起来、果木炭香气出来，现场感会更明显。",
+              "想吃烤肉的烟火气，果木炭这点挺加分。",
+            ],
+            staff: [
+              "店员忙起来的时候，最明显的就是果木炭和烤肉香气。",
+              "今天现场如果拍图，可以把果木炭和烤盘一起拍进去。",
+            ],
+            image: ["果木炭烤盘近景", "炭火和烤肉同框", "烤盘冒热气现场"],
+          },
+          grillAssist: {
+            label: "助烤服务",
+            lines: [
+              "第一次来不用担心烤不好，到店可以问问助烤。",
+              "你负责聊天吃肉，我们帮你盯着火候会更省心。",
+              "不会烤也没关系，坐下来，剩下的交给店员帮你看。",
+            ],
+            staff: [
+              "今天店员助烤挺忙，但客人吃得省心，这点很重要。",
+              "不太会烤肉的朋友，可以直接跟店员说需要帮忙。",
+            ],
+            image: ["店员助烤现场", "店员夹肉翻面", "客人边聊边等烤肉"],
+          },
+        },
+        materialProducts: {
+          blackBeef: ["honeyBeef", "snowChuck", "oysterBlade", "fruitwoodCharcoal"],
+          classicPlatter: ["honeyBeef", "snowChuck", "oysterBlade"],
+          newDishes: ["oysterBlade", "honeyBeef", "grillAssist"],
+          beefRibGift: ["grillAssist", "honeyBeef"],
+          voucher69: ["honeyBeef", "snowChuck", "grillAssist"],
+          memberRights: ["honeyBeef", "grillAssist", "snowChuck"],
+          lateMeal: ["honeyBeef", "fruitwoodCharcoal", "grillAssist"],
+        },
+        clover: {
+          scene: {
+            common: [
+              "一条朋友圈只说一件事：今天适合来吃肉。",
+              "有时候顾客不是不想来，是刚好没想起来。",
+              "刷到这条的时候，如果正好不知道吃什么，就够了。",
+            ],
+            sceneMeal: [
+              "在万博附近逛街、上班、路过，顺路过来比较方便。",
+              "下班后不用把吃饭想复杂，坐下烤一会儿就放松了。",
+              "朋友临时约饭，烤肉这种场景不容易冷场。",
+            ],
+            gathering: [
+              "朋友聚餐、家庭吃饭，点几样肉边烤边聊会更自然。",
+              "一家人出来吃，重点是省心、热乎、桌面有氛围。",
+              "几个人一起吃烤肉，比各点各的更容易聊起来。",
+            ],
+            lateNight: [
+              "晚上晚一点还想吃肉，可以先问问当天营业安排。",
+              "夜里想吃口热的，烤肉配点小食就够舒服。",
+              "白天没时间的话，晚上也可以先问问门店情况。",
+            ],
+          },
+          trust: {
+            daily: [
+              "今天店里就是正常忙，烤盘一热起来就有烟火气。",
+              "真实现场不用写太满，拍到肉和人就够了。",
+              "店里人忙起来的时候，反而更像真实朋友圈。",
+            ],
+            service: [
+              "不太会烤也不用紧张，店员会按现场情况帮你看火候。",
+              "第一次来不知道怎么点，跟店员说人数和口味就行。",
+              "有人帮你看着烤盘，吃饭这件事会轻松很多。",
+            ],
+            feedback: [
+              "刚才有桌客人说今天这顿吃得挺舒服，听着就很开心。",
+              "有客人吃完说下次还带朋友来，这种反馈挺实在。",
+              "今天有桌客人加了肉，说明这口确实对味。",
+            ],
+            oldReturn: [
+              "老朋友回来问权益，我们会按当天门店口径说明白。",
+              "原九田家万博店升级后，很多老顾客还是认这个位置。",
+              "老会员回来先问权益，再慢慢点餐，不用自己研究。",
+            ],
+          },
+          action: [
+            "想吃的话，到店问我们就行。",
+            "路过万博附近，可以进来看看今天状态。",
+            "不会点也没关系，我们按人数帮你搭。",
+            "先留着，今天想吃肉的时候再翻出来。",
+            "具体活动和权益，以当天门店口径为准。",
+          ],
+        },
+        structureLabels: {
+          productSeed: "产品种草",
+          sceneMeal: "下班吃饭",
+          gathering: "聚餐场景",
+          serviceAssist: "助烤服务",
+          lateNight: "夜场提醒",
+          daily: "门店日常",
+          staffPick: "店员推荐",
+          feedback: "顾客反馈",
+          benefit: "福利提醒",
+          order: "点单建议",
+          oldReturn: "老客回流",
+        },
+        structureImages: {
+          productSeed: ["产品特写", "烤盘近景", "肉品纹理"],
+          sceneMeal: ["门头位置", "下班时段外景", "两三人桌面"],
+          gathering: ["朋友聚餐桌面", "家庭聚餐桌面", "整桌俯拍"],
+          serviceAssist: ["店员助烤", "店员夹肉翻面", "客人边聊边等烤肉"],
+          lateNight: ["夜间门头", "晚间烤盘近景", "夜宵桌面"],
+          daily: ["门店现场", "店员忙碌", "烤盘热气"],
+          staffPick: ["店员推荐产品", "店员手持菜单", "产品上桌近景"],
+          feedback: ["顾客桌面", "加菜后的桌面", "顾客返图"],
+          benefit: ["福利截图", "会员权益提示", "门店物料加菜品"],
+          order: ["拼盘上桌", "按人数搭配的一桌", "菜单和烤肉同框"],
+          oldReturn: ["门头升级", "老客到店桌面", "接待说明画面"],
+        },
+        qualityTips: [
+          "检查：像朋友发的、只说一件事、发前核对当天口径。",
+          "发前看一眼：别像广告，别写太满，活动按当天门店口径。",
+          "小检查：顾客看完知道今天可以来，文案里没有夸张承诺。",
+          "发布前确认：图片用实拍，福利和营业时间按当天口径删改。",
+        ],
         emojis: ["🥩", "🔥", "🍖", "📍", "✨", "🙌"],
-        structures: ["familiar", "daily", "question", "order", "benefit"],
-        bannedWords: ["保定第一", "全城最火", "必吃天花板", "错过再等一年", "不来后悔", "爆火全网"],
+        structures: ["productSeed", "sceneMeal", "gathering", "serviceAssist", "daily", "staffPick", "feedback", "order", "benefit"],
+        bannedWords: [
+          "保定第一",
+          "全城最火",
+          "必吃天花板",
+          "错过再等一年",
+          "不来后悔",
+          "爆火全网",
+          "火爆全城",
+          "盛大开业",
+          "欢迎光临",
+          "赶紧来",
+          "快来抢",
+          "限时",
+          "马上抢",
+        ],
       };
 
       const state = {
@@ -1124,6 +1357,7 @@
       const output = document.getElementById("momentOutput");
       const charCount = document.getElementById("charCount");
       const imageSuggestion = document.getElementById("imageSuggestion");
+      const qualityTip = document.getElementById("qualityTip");
       const resultMeta = document.getElementById("resultMeta");
       const toast = document.getElementById("toast");
       const generateButton = document.getElementById("generateButton");
@@ -1157,6 +1391,60 @@
         return pick(pool || material.safe);
       }
 
+      function getProductKey(materialKey, structure) {
+        if (structure === "serviceAssist") return "grillAssist";
+        if (structure === "daily" && Math.random() > 0.58) return "fruitwoodCharcoal";
+        const products = data.materialProducts[materialKey] || data.materialProducts.blackBeef;
+        return pick(products);
+      }
+
+      function getProductLine(productKey, structure) {
+        const product = data.productDetails[productKey];
+        const pool = structure === "staffPick" ? product.staff : product.lines;
+        return pick(pool || product.lines);
+      }
+
+      function getHook(structure, materialKey) {
+        const hookPools = {
+          productSeed: ["product", "pain"],
+          staffPick: ["product", "pain"],
+          sceneMeal: ["location", "time", "pain"],
+          gathering: ["crowd", "location", "pain"],
+          serviceAssist: ["pain", "product"],
+          lateNight: ["time", "pain"],
+          daily: ["time", "location"],
+          feedback: ["crowd", "location"],
+          benefit: ["pain", "location", "time"],
+          order: ["pain", "product"],
+          oldReturn: ["location", "crowd"],
+        };
+        const hookType = pick(hookPools[structure] || ["pain"]);
+        if (hookType === "product") {
+          const productKey = getProductKey(materialKey, structure);
+          return { text: pick(data.hooks.product), hookType, productKey };
+        }
+        return { text: pick(data.hooks[hookType]), hookType, productKey: getProductKey(materialKey, structure) };
+      }
+
+      function getSceneLeaf(structure) {
+        const scene = data.clover.scene[structure] || data.clover.scene.common;
+        return pick(scene);
+      }
+
+      function getTrustLeaf(structure) {
+        if (structure === "serviceAssist") return pick(data.clover.trust.service);
+        if (structure === "feedback") return pick(data.clover.trust.feedback);
+        if (structure === "oldReturn") return pick(data.clover.trust.oldReturn);
+        return pick(data.clover.trust.daily);
+      }
+
+      function getActionLine(structure) {
+        if (structure === "benefit" || state.intent === "benefit" || state.intent === "oldCustomer") {
+          return "具体活动和权益，以当天门店口径为准。";
+        }
+        return pick(data.clover.action);
+      }
+
       function maybeEmoji() {
         if (!emojiToggle.checked) return "";
         if (Math.random() < 0.32) return "";
@@ -1170,10 +1458,11 @@
       }
 
       function chooseStructure() {
-        if (state.rewrite === "daily") return pick(["daily", "daily", "familiar", "question"]);
-        if (state.rewrite === "short") return pick(["familiar", "question", "benefit"]);
-        if (state.rewrite === "scene") return pick(["daily", "order", "familiar"]);
-        return pick(data.structures);
+        const intentStructures = data.intentStructures[state.intent] || data.structures;
+        if (state.rewrite === "daily") return pick(intentStructures.filter((item) => ["daily", "feedback", "staffPick", "oldReturn"].includes(item)).concat(["daily"]));
+        if (state.rewrite === "short") return pick(intentStructures.filter((item) => !["lateNight", "gathering"].includes(item)).concat(["productSeed", "sceneMeal"]));
+        if (state.rewrite === "scene") return pick(intentStructures.filter((item) => ["sceneMeal", "gathering", "daily", "feedback", "serviceAssist"].includes(item)).concat(["sceneMeal"]));
+        return pick(intentStructures);
       }
 
       function buildLines(structure) {
@@ -1183,20 +1472,32 @@
         const target = data.target[state.target];
         const materialKey = getEffectiveMaterial();
         const materialLine = getMaterialLine(materialKey);
+        const hook = getHook(structure, materialKey);
+        const productLine = getProductLine(hook.productKey, structure);
+        const sceneLeaf = getSceneLeaf(structure);
+        const trustLeaf = getTrustLeaf(structure);
+        const actionLine = getActionLine(structure);
         const extra = normalizeExtra();
         const opener = `${maybeEmoji()}${pick(tone.openers)}`;
         const timeCue = pick(time.cues);
-        const angle = pick(intent.angles[structure]);
+        const legacyStructure = intent.angles[structure] ? structure : pick(Object.keys(intent.angles));
+        const intentLine = pick(intent.angles[legacyStructure]);
         const targetLine = state.rewrite === "short" ? pick(target.short) : pick(target.cues);
         const closer = pick(tone.closers);
         const extraLine = extra ? `今天补充：${extra}` : "";
 
         const templates = {
-          familiar: [opener, angle, targetLine, extraLine, closer],
-          daily: [timeCue, angle, materialLine, extraLine, pick(["想吃的话直接来店里问。", "不写太满，大家看真实状态就行。", "今天适合拍实物图，别太像广告。"])],
-          question: [angle, materialLine, targetLine, extraLine, pick(["到店问我们就行。", "不会点也没关系，我们帮你搭。", "先收藏，想吃肉的时候再翻出来。"])],
-          order: [angle, materialLine, targetLine, extraLine, pick(["几个人来都能帮你搭一桌。", "想吃得稳一点，就这样点。", "发朋友圈配实拍图更自然。"])],
-          benefit: [opener, angle, materialLine, extraLine, pick(["具体以当天门店和平台展示为准。", "能用的我们会帮你看清楚。", "先留着，来吃的时候问一句。"])],
+          productSeed: [hook.text, productLine, targetLine, extraLine, actionLine],
+          sceneMeal: [hook.text, sceneLeaf, materialLine, extraLine, actionLine],
+          gathering: [hook.text, sceneLeaf, targetLine, extraLine, actionLine],
+          serviceAssist: [hook.text, getProductLine("grillAssist", structure), trustLeaf, extraLine, actionLine],
+          lateNight: [hook.text, sceneLeaf, productLine, extraLine, "晚上来之前，可以先问问当天安排。"],
+          daily: [timeCue, intentLine, trustLeaf, extraLine, pick(["不写太满，大家看真实状态就行。", "图片用今天实拍，真实比精修更好。", closer])],
+          staffPick: [opener, productLine, pick(data.productDetails[hook.productKey].staff), extraLine, actionLine],
+          feedback: [hook.text, trustLeaf, materialLine, extraLine, actionLine],
+          benefit: [opener, intentLine, materialLine, extraLine, actionLine],
+          order: [hook.text, intentLine, productLine, extraLine, pick(["不会点也没关系，我们按人数帮你搭。", "几个人来都能帮你搭一桌。", "想吃得稳一点，就这样点。"])],
+          oldReturn: [opener, intentLine, trustLeaf, extraLine, actionLine],
         };
 
         let lines = templates[structure].filter(Boolean);
@@ -1212,7 +1513,7 @@
         const minimum = state.rewrite === "short" ? 42 : 50;
         const maximum = state.rewrite === "short" ? 82 : 110;
         let next = lines.slice();
-        const removable = ["今天补充：", "建议配一张", "图片用今天", "具体以当天", "先收藏"];
+        const removable = ["今天补充：", "建议配一张", "图片用今天", "具体活动", "先留着", "路过万博"];
 
         while (textLength(next.join("")) > maximum && next.length > 3) {
           const index = next.findIndex((line) => removable.some((prefix) => line.startsWith(prefix)));
@@ -1244,22 +1545,28 @@
         return { text, structure };
       }
 
-      function buildImageSuggestion() {
+      function buildImageSuggestion(structure) {
         const intent = data.intent[state.intent];
         const material = data.material[getEffectiveMaterial()];
-        const backup = ["门头实拍", "烤肉近景", "桌面全景", "员工现场图", "顾客返图"];
-        const first = pick(intent.image);
-        const second = pick(material.image);
+        const structureImages = data.structureImages[structure] || ["门店实拍", "烤肉近景"];
+        const backup = ["门头实拍", "烤肉近景", "桌面全景", "员工助烤", "顾客返图"];
+        const first = pick(structureImages);
+        const second = pick(intent.image.concat(material.image));
         const third = pick(backup);
         return `配图：${first} + ${second}。素材不够时用${third}，尽量发今天真实现场。`;
+      }
+
+      function buildQualityTip() {
+        return pick(data.qualityTips);
       }
 
       function updateOutput(result) {
         currentMomentText = result.text;
         output.textContent = result.text;
-        imageSuggestion.textContent = buildImageSuggestion();
+        imageSuggestion.textContent = buildImageSuggestion(result.structure);
+        qualityTip.textContent = buildQualityTip();
         charCount.textContent = `${textLength(result.text)}字`;
-        resultMeta.textContent = `${data.intent[state.intent].label} · ${data.target[state.target].label}`;
+        resultMeta.textContent = `${data.intent[state.intent].label} · ${data.structureLabels[result.structure] || "门店日常"}`;
       }
 
       function generateMoment(rewrite = "normal") {
