@@ -761,7 +761,7 @@
       <header class="hero">
         <div class="eyebrow">
           <span>朴牛牛黑牛烤肉 · 门店员工版</span>
-          <span class="version">v2.3</span>
+          <span class="version">v2.3.1</span>
         </div>
         <h1>朋友圈生成器</h1>
         <p>少选几项，填一句今日口径，一次生成 3 条可选文案。门店员工挑一条复制就能发。</p>
@@ -1498,7 +1498,7 @@
         qualityTips: [
           "检查：像朋友发的、只说一件事、发前核对当天口径。",
           "发前看一眼：别像广告，活动按当天门店口径。",
-          "小检查：顾客看完知道今天可以来，文案里没有夸张承诺。",
+          "小检查：顾客看完知道今天可以来，没有夸张承诺。",
           "发布前确认：图片用实拍，福利和营业时间按当天口径删改。",
         ],
         emojis: ["🥩", "🔥", "🍖", "📍", "✨", "🙌"],
@@ -1585,6 +1585,16 @@
           "先发一条",
           "发出去",
           "配图：",
+        ],
+        metaPhrases: [
+          "今天补充",
+          "今天提醒",
+          "今日口径",
+          "你填了",
+          "不能写死",
+          "字段",
+          "工具提示",
+          "生成规则",
         ],
         extraReplacements: [
           ["状态不错", "看着不错"],
@@ -1845,7 +1855,7 @@
           "发前看一眼：像朋友提醒，只讲一件事，活动按当天口径。",
           "小检查：没有夸张承诺，图片用当天实拍。",
           "发布前确认：福利、库存、营业时间按门店当天口径删改。",
-          "门店可用标准：顾客看完知道吃什么、怎么问、配什么图。",
+          "门店可用标准：顾客看完知道吃什么、怎么问、发哪张实拍。",
         ],
       };
 
@@ -1901,11 +1911,92 @@
         };
       }
 
+      function stripTodayPrefix(text) {
+        return text
+          .replace(/^(今天|今日)\s*/g, "")
+          .replace(/^(有|要提醒|提醒一下|提醒|主要提醒)\s*/g, "")
+          .trim();
+      }
+
+      function buildFactLine(fact) {
+        const body = stripTodayPrefix(fact);
+        if (!body) return "";
+
+        if (/顾客返图|返图/.test(body)) {
+          return pick([
+            "今天有顾客返图，这一桌看着挺舒服。",
+            "刚好有顾客返图，想吃的话可以照着这桌点。",
+            "今天有顾客返图，看图比说太多更直接。",
+          ]);
+        }
+
+        if (/新品|新菜|新口味/.test(body)) {
+          return pick([
+            "今天有新品，想换口味的朋友可以问店员。",
+            "今天有新口味，可以先点一份尝尝。",
+            "今天有新品上桌，搭经典款一起点更稳。",
+          ]);
+        }
+
+        if (/直播/.test(body)) {
+          return pick([
+            "今天如果看到直播，具体活动到店按当天口径问清楚。",
+            "今天直播相关内容，以门店当天说明为准。",
+          ]);
+        }
+
+        if (/牛肉|肉/.test(body) && /不错|新鲜|看着|状态|好/.test(body)) {
+          return pick([
+            "今天牛肉看着不错，烤起来会更有食欲。",
+            "今天肉品看着挺精神，适合来吃一顿热的。",
+            "今天这批肉看着不错，想吃的话到店问店员。",
+          ]);
+        }
+
+        return pick([
+          `今天有${body}，想吃的话到店问店员。`,
+          `今天${body}，到店按人数帮你搭。`,
+        ]);
+      }
+
+      function buildReminderLine(reminder) {
+        const body = stripTodayPrefix(reminder);
+        if (!body) return "";
+
+        if (/下班|聚餐|约饭/.test(body)) {
+          return pick([
+            "下班想聚餐的话，几个人来都能按人数搭。",
+            "下班约饭不用想太久，到店按人数帮你搭。",
+            "下班想吃口热的，来万博顺路坐一桌。",
+          ]);
+        }
+
+        if (/福利|会员|券|活动|权益/.test(body)) {
+          return pick([
+            "福利和会员权益先到店问清楚，再点餐更省心。",
+            "手里有券或会员权益，到店先问店员。",
+            "想用福利的话，到店按当天门店口径核一遍。",
+          ]);
+        }
+
+        if (/老客|老会员|老朋友/.test(body)) {
+          return pick([
+            "老朋友回来先问权益，再慢慢点餐。",
+            "老会员到店先问店员，按当天口径帮你看。",
+          ]);
+        }
+
+        return pick([
+          `${body}这件事，到店问店员更清楚。`,
+          `如果在意${body}，点餐前先问店员。`,
+        ]);
+      }
+
       function normalizeExtra() {
         const brief = getDailyBrief();
         const lines = [];
-        if (brief.fact) lines.push(`今天补充：${brief.fact}。`);
-        if (brief.reminder) lines.push(`今天提醒：${brief.reminder}。`);
+        if (brief.fact) lines.push(buildFactLine(brief.fact));
+        if (brief.reminder) lines.push(buildReminderLine(brief.reminder));
         if (!lines.length) return "";
         if (state.rewrite === "short") return pick(lines);
         return Math.random() < 0.72 ? pick(lines) : lines.join("");
@@ -2080,14 +2171,14 @@
         const length = textLength(text);
         const maximum = state.rewrite === "short" ? 86 : 110;
         const minimum = state.rewrite === "short" ? 38 : 50;
-        const allBadWords = data.bannedWords.concat(contentV22.badPhrases);
+        const allBadWords = data.bannedWords.concat(contentV22.badPhrases, contentV22.metaPhrases);
         const brief = getDailyBrief();
         const compact = text.replace(/\s/g, "");
 
         if (!text || /undefined|null|\{|\}/.test(text)) return { pass: false, reason: "empty-slot" };
         if (length > maximum || length < minimum) return { pass: false, reason: "length" };
         if (allBadWords.some((word) => word && text.includes(word))) return { pass: false, reason: "bad-word" };
-        if (/发朋友圈|文案|配图|今天适合发|拍一张|拍三张|拍近景|发一张|照片会|先发一条|发出去/.test(text)) return { pass: false, reason: "meta-copy" };
+        if (/发朋友圈|文案|配图|今日口径|今天补充|今天提醒|你填了|不能写死|今天适合发|拍一张|拍三张|拍近景|发一张|照片会|先发一条|发出去/.test(text)) return { pass: false, reason: "meta-copy" };
         if (/23点|营业到|全天供应|库存|剩余|抢购/.test(text)) return { pass: false, reason: "strong-promise" };
         if (brief.risk && /一定|保证|都有|随时|马上|抢|剩/.test(text)) return { pass: false, reason: "risky-promise" };
         if (state.intent !== "benefit" && /69抵100|平台券|团购券|代金券/.test(text)) return { pass: false, reason: "benefit-conflict" };
@@ -2152,7 +2243,7 @@
           return `配图：${result.image}。能拍门头、老客桌面或店员说明更合适。`;
         }
         if (result.structure === "serviceAssist") {
-          return `配图：${result.image}。拍到店员夹肉或翻面，会更贴近这条文案。`;
+          return `配图：${result.image}。拍到店员夹肉或翻面，会更贴近这条内容。`;
         }
         if (["sceneMeal", "gathering", "daily", "feedback"].includes(result.structure)) {
           return `配图：${result.image}。尽量有烤盘热气、整桌或顾客桌面。`;
@@ -2162,8 +2253,8 @@
 
       function buildQualityTip(result) {
         if (result.structure === "benefit") return "发前看一眼：券、活动、会员权益按当天门店口径。";
-        if (result.structure === "oldReturn") return "发前看一眼：老会员权益别写死，到店按当天口径说明。";
-        if (getDailyBrief().risk) return "发前看一眼：你填了“不能写死”，这条已按保守口径生成。";
+        if (result.structure === "oldReturn") return "发前看一眼：老会员权益到店按当天口径说明。";
+        if (getDailyBrief().risk) return "发前看一眼：活动、库存、营业时间按当天门店口径核对。";
         return pick(contentV22.qualityTips);
       }
 
